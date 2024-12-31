@@ -1,0 +1,314 @@
+.dashboard {
+    /* background-image: url('./background.jpg');
+    background-size: cover;
+    background-position: bottom;
+    height: 100vh;    */
+}
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@200;300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+.card_navbar {
+    background: #ffffff;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    height: 5%;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    box-shadow: 5px 5px 5px #dfd7d7, -5px -5px 5px #fcf8f8;
+    display: flex;
+    align-items: center;
+}
+.dash {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    margin-bottom: 1%;
+}
+::-webkit-scrollbar{
+    display: inline;
+}
+.menu {
+    margin-right: 2rem;
+}
+
+.menu_bars,.user_p {
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+.right_items{
+    display: flex;
+    margin-left: auto;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.fullscreen {
+    margin: 0 2rem;
+    cursor: pointer;
+}
+
+.fullicon{
+    width: 2rem;
+    height: 1.9rem;
+}
+.p-sidebar .p-sidebar-header
+{
+    font-size:xx-large;
+    font-weight: bolder;
+}
+.reportbutton,.multi_cards{
+    margin-bottom: 4px;
+    background: none;
+    padding-top: 0.2rem;
+    padding-bottom: 0.27rem;
+    padding-left: 2rem;
+    font-size: larger;
+    font-weight: bold;
+    padding-right: 2rem;
+    border-radius: 5px;
+    transition: box-shadow 300ms ease-in-out;
+    font-family: "Exo 2", sans-serif;
+    cursor:grab;
+
+}
+
+.multi_b,.report_b,.Back{
+    margin-right: 1.5rem;
+}
+.reportbutton:hover,.multi_cards:hover{
+    box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.3);
+}
+.sidebar_dash {
+    background: #ffffff;
+    padding: 1.2rem;
+    margin-bottom: 1.5rem;
+    width: 22vw;
+    height: 100%;
+    overflow-x: none;
+    overflow-y:auto;
+    position: fixed;
+}
+.sidebar_dash::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #ffffff;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.sidebar_dash::-webkit-scrollbar {
+    width: 3px;
+	background-color: #F5F5F5;
+}
+
+.sidebar_dash::-webkit-scrollbar-thumb {
+    background-color: #a3a4ad;
+    height: calc(50% - 10px);
+} 
+.displaysidebar_dash{
+    display: none;
+}
+.p-sidebar-right .p-sidebar{
+    width: 70%;
+}
+.table{
+    display: flex;
+    flex-direction: column;
+}
+.download{
+    margin-left: auto;
+    margin-bottom: 2%;
+}
+.Dialog_hear{
+    width: 30%;
+    display: flex;
+}
+.sidebar_buttons{
+    background-color: rgb(215, 220, 225);
+    border: none;
+    height: 10%;
+    border-radius: 10px;
+    width: 100%;
+    font-family: "Mukta", sans-serif;
+    font-weight: 700;
+    font-size: larger;
+    font-style: normal;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.task_multiplecard {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+    flex: 1 1 calc(33.33%- 50px);
+    cursor: grab;
+    touch-action: none;
+    /* margin: 5%; */
+    margin-bottom: 5%;
+  }
+  
+.task_multiplecard input {
+    cursor: default;
+  }
+  
+  .task_multiplecard input[type="checkbox"] {
+    /* Hide the default checkbox */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    /* Adjust as needed */
+    height: 20px;
+    /* Adjust as needed */
+    position: relative;
+  }
+  
+  .task_multiplecard input[type="checkbox"]::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    /* Background color of the checkbox */
+    border: 1px solid #ccc;
+    /* Border color of the checkbox */
+    position: absolute;
+    border-radius: 3px;
+    top: 0;
+    left: 0;
+  }
+  
+  .task_multiplecard input[type="checkbox"]:checked::before {
+    background-color: rgb(242, 245, 247);
+    /* Change this to your desired background color when checked */
+  }
+  
+  .task_multiplecard input[type="checkbox"]::after {
+    content: '\2713';
+    /* Unicode for checkmark symbol */
+    font-size: 26px;
+    /* Adjust as needed */
+    color: transparent;
+    /* Make the checkmark transparent by default */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .task_multiplecard input[type="checkbox"]:checked::after {
+    color: black;
+    /* Change the color of the checkmark when checked */
+  }
+  .submit_multiconditions{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+.sidebar-container {
+    background-color: #060b26;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    transition: 1s;
+}
+
+.sidebar-container.active {
+    left: 0;
+    transition: 500ms;
+}
+
+.single_card,
+.multiple_cards {
+    font-family: "Merriweather", serif;
+    font-weight: 700;
+    font-style: normal;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1rem; 
+    overflow: auto;
+}
+
+
+.conditiontitle{
+    margin: 0px;
+}
+.multiple_cards .card_to_display{
+    margin-left: 1.2rem;
+    position: relative;
+
+    height:84vh;
+    width: calc(50% - 1.2rem); /* Two cards per row, subtracting margin */
+}
+.single_card .card_to_display{
+    margin-left: 1.2rem;
+    position: relative;
+
+    height:84vh;
+}
+
+.single_datatable {
+    width: 100%; /* Two cards per row, subtracting margin */
+   height: 70vh;
+   overflow-x: auto;
+   overflow-y: auto; /* Add overflow-x: auto to enable horizontal scrollbar for the table */
+}
+.single_datatable::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #ffffff;
+    margin-top: 10px;
+}
+
+.single_datatable::-webkit-scrollbar {
+    width: 7px;
+	background-color: #F5F5F5;
+}
+
+.single_datatable::-webkit-scrollbar-thumb {
+    background-color: #7e87e1;
+} 
+.multiple_datatable {
+    width: 100%;
+    height: 60vh;
+    overflow-x: auto;
+  /* Add overflow-x: auto to enable horizontal scrollbar for the table */
+}
+.multiple_datatable::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #ffffff;
+    margin-top: 10px;
+}
+
+.multiple_datatable::-webkit-scrollbar {
+    width: 4px;
+	background-color: #F5F5F5;
+}
+
+.multiple_datatable::-webkit-scrollbar-thumb {
+    background-color: #7e87e1;
+} 
+.single_card .cards_side_close{
+    width: 98vw; 
+    position: relative;
+
+    height:100%;
+    margin-left: 1rem;
+    margin-top: 0rem;
+}
+
+.single_card .card_to_display, .multiple_cards .card_to_display {
+    margin-top: 1.2rem; 
+}
+.filter_button{
+    display: flex;
+   float: right;
+   top: 0;
+   margin-right: 5%;
+}
