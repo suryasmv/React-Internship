@@ -65,7 +65,7 @@ const Dashboard = () => {
   const [visibleleft, setVisibleleft] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [selectedCondition, setSelectedCondition] = useState(null);
-  const { renderSidebar, toggleSidebar } = Phenotype();
+  const [isPhenotypeVisible, setPhenotypeVisible] = useState(false);
 
   useEffect(() => {
     const storedColumns = localStorage.getItem("selectedColumns");
@@ -438,80 +438,92 @@ const Dashboard = () => {
     );
 
     return (
-        <div>
-          <TabView scrollable style={{ overflowY: 'hidden' }}>
-            {conditionData.subcategories.map((subcategory, index) => (
-              <TabPanel key={index} header={subcategory.name}>
-                {subcategory.subtype ? (
-                  <TabView scrollable style={{ overflowY: 'hidden' }}>
-                    {subcategory.subtype.map((subtype, subtypeIndex) => (
-                      <TabPanel key={subtypeIndex} header={subtype.name}>
-                        <div>
-                          <DataTable
-                            value={data.filter(
-                              (item) =>
-                                item.Headings === subcategory.name &&
-                                item.Condition === subtype.name &&
-                                item.subtype_cond === conditionTitle
-                            )}
-                            scrollable
-                            reorderableColumns
-                            resizableColumns
-                            sortMode="multiple"
-                            globalFilterFields={selectedColumns}
-                            className={
-                              cardsToDisplay === 1
-                                ? "single_datatable"
-                                : "multiple_datatable"
-                            }
-                            style={{ maxHeight: 'none' }}  // Disable max height and vertical overflow
-                          >
-                            {selectedColumns.map((columnName, index) => (
-                              <Column
-                                key={index}
-                                sortable
-                                field={columnName}
-                                header={
-                                  <div style={{ whiteSpace: "normal", textAlign: "center" }}>
-                                    {columnName.split(" ").map((part, i) => (
-                                      <div key={i}>{part}</div>
-                                    ))}
-                                  </div>
-                                }
-                                body={(rowData) => {
-                                  let content;
-                                  if (typeof rowData[columnName] === "string") {
-                                    const names = rowData[columnName].split(",");
-                                    const namePairs = [];
-                                    for (let i = 0; i < names.length; i += 2) {
-                                      namePairs.push(names.slice(i, i + 2).join(","));
-                                    }
-                                    content = namePairs.map((pair, i) => (
-                                      <div key={i}>{pair}</div>
-                                    ));
-                                  } else if (typeof rowData[columnName] === "number") {
-                                    content = rowData[columnName];
-                                  } else {
-                                    content = "";
+      <div>
+        <TabView scrollable style={{ overflowY: "hidden" }}>
+          {conditionData.subcategories.map((subcategory, index) => (
+            <TabPanel key={index} header={subcategory.name}>
+              {subcategory.subtype ? (
+                <TabView scrollable style={{ overflowY: "hidden" }}>
+                  {subcategory.subtype.map((subtype, subtypeIndex) => (
+                    <TabPanel key={subtypeIndex} header={subtype.name}>
+                      <div>
+                        <DataTable
+                          value={data.filter(
+                            (item) =>
+                              item.Headings === subcategory.name &&
+                              item.Condition === subtype.name &&
+                              item.subtype_cond === conditionTitle
+                          )}
+                          scrollable
+                          reorderableColumns
+                          resizableColumns
+                          sortMode="multiple"
+                          globalFilterFields={selectedColumns}
+                          className={
+                            cardsToDisplay === 1
+                              ? "single_datatable"
+                              : "multiple_datatable"
+                          }
+                          style={{ maxHeight: "none" }} // Disable max height and vertical overflow
+                        >
+                          {selectedColumns.map((columnName, index) => (
+                            <Column
+                              key={index}
+                              sortable
+                              field={columnName}
+                              header={
+                                <div
+                                  style={{
+                                    whiteSpace: "normal",
+                                    textAlign: "center",
+                                  }}
+                                >
+                                  {columnName.split(" ").map((part, i) => (
+                                    <div key={i}>{part}</div>
+                                  ))}
+                                </div>
+                              }
+                              body={(rowData) => {
+                                let content;
+                                if (typeof rowData[columnName] === "string") {
+                                  const names = rowData[columnName].split(",");
+                                  const namePairs = [];
+                                  for (let i = 0; i < names.length; i += 2) {
+                                    namePairs.push(
+                                      names.slice(i, i + 2).join(",")
+                                    );
                                   }
-                                  return <div style={{ whiteSpace: "normal" }}>{content}</div>;
-                                }}
-                              />
-                            ))}
-                          </DataTable>
-                        </div>
-                      </TabPanel>
-                    ))}
-                  </TabView>
-                ) : (
-                  <div>{subcategory.name}</div>
-                )}
-              </TabPanel>
-            ))}
-          </TabView>
-        </div>
-      );
-      
+                                  content = namePairs.map((pair, i) => (
+                                    <div key={i}>{pair}</div>
+                                  ));
+                                } else if (
+                                  typeof rowData[columnName] === "number"
+                                ) {
+                                  content = rowData[columnName];
+                                } else {
+                                  content = "";
+                                }
+                                return (
+                                  <div style={{ whiteSpace: "normal" }}>
+                                    {content}
+                                  </div>
+                                );
+                              }}
+                            />
+                          ))}
+                        </DataTable>
+                      </div>
+                    </TabPanel>
+                  ))}
+                </TabView>
+              ) : (
+                <div>{subcategory.name}</div>
+              )}
+            </TabPanel>
+          ))}
+        </TabView>
+      </div>
+    );
   };
   if (logout) {
     return <Navigate to="/" />;
@@ -623,17 +635,15 @@ const Dashboard = () => {
             />
           </div>
 
-          <div className="Back">
+          <div className="dashboard">
             {/* Phenotype Button */}
-            <div className="Back">
+            <div className="phenotype-toggle">
               <Button
                 label="Phenotype"
                 className="goback_col"
-                onClick={toggleSidebar}
+                onClick={() => setPhenotypeVisible(!isPhenotypeVisible)}
               />
             </div>
-
-            {renderSidebar()}
           </div>
 
           <div
@@ -651,61 +661,74 @@ const Dashboard = () => {
       </div>
 
       <div className="conditions_cards">
-  {cardsToDisplay > 1 && (
-    <div className="multiple_cards">
-      {prefer.slice(0, cardsToDisplay).map((pp, index) => (
-        <div key={index} className="card_to_display">
-          <Card className="cards_condition">
-            <div className="card-content">
-              <h1 className="conditiontitle">
-                {pp.title.replace(/_/g, " ")}
-              </h1>
-              <div>{RenderTabViewContent(pp.title)}</div>
-            </div>
-          </Card>
-        </div>
-      ))}
-    </div>
-  )}
-  {cardsToDisplay === 1 && (
-    <div className="single_card">
-      <div className="cards_side_close">
-        <Card className="cards_condition">
-          {/* Tab and content container */}
-          <div className="side-content-container">
-            {/* Sidebar with conditions */}
-            <div
-              visible={visibleleft}
-              position="left"
-              onHide={() => setVisibleleft(false)}
-              className="side-conditions-tab"
-            >
-              <h2>Selected Conditions</h2>
-              {sidebarprefer.map((preference, index) => (
-                <button
-                  key={index}
-                  className="sidebar_buttons"
-                  onClick={() => handleSingleCodnition(preference.title)}
-                >
-                  {preference.title}
-                </button>
-              ))}
-            </div>
+        {cardsToDisplay > 1 && (
+          <div className="multiple_cards">
+            {prefer.slice(0, cardsToDisplay).map((pp, index) => (
+              <div key={index} className="card_to_display">
+                <Card className="cards_condition">
+                  <div className="card-content">
+                    <h1 className="conditiontitle">
+                      {pp.title.replace(/_/g, " ")}
+                    </h1>
+                    <div>{RenderTabViewContent(pp.title)}</div>
+                  </div>
+                </Card>
+              </div>
+            ))}
+          </div>
+        )}
+        {cardsToDisplay === 1 && (
+          <div className="single_card">
+            <div className="cards_side_close">
+              <Card className="cards_condition">
+                {/* Tab and content container */}
+                <div className="side-content-container">
+                  {/* Sidebar with conditions */}
+                  <div
+                    visible={visibleleft}
+                    position="left"
+                    onHide={() => setVisibleleft(false)}
+                    className="side-conditions-tab"
+                  >
+                    {sidebarprefer.map((preference, index) => (
+                      <button
+                        key={index}
+                        className="sidebar_buttons"
+                        onClick={() => handleSingleCodnition(preference.title)}
+                      >
+                        {preference.title}
+                      </button>
+                    ))}
+                  </div>
 
-            {/* Main content area */}
-            <div className="card-content">
-              <h1 className="conditiontitle">
-                {selectedCondition ? selectedCondition.replace(/_/g, " ") : " "}
-              </h1>
-              <div>{RenderTabViewContent(selectedCondition)}</div>
+                  {/* Main content area */}
+                  <div>
+                    <div
+                      className="card-content"
+                      style={{
+                        width: isPhenotypeVisible ? "35em" : "75em",
+                      }}
+                    >
+                      <h1 className="conditiontitle">
+                        {selectedCondition
+                          ? selectedCondition.replace(/_/g, " ")
+                          : " "}
+                      </h1>
+                      <div>{RenderTabViewContent(selectedCondition)}</div>
+                    </div>
+                  </div>
+                  <div>
+                  <Phenotype
+                      isPhenotypeVisible={isPhenotypeVisible}
+                      setPhenotypeVisible={setPhenotypeVisible}
+                    />
+                  </div>
+                </div>
+              </Card>
             </div>
           </div>
-        </Card>
+        )}
       </div>
-    </div>
-  )}
-</div>
-
     </div>
   );
 };

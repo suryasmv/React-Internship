@@ -259,9 +259,8 @@
 .single_card .side-conditions-tab {
   flex: 0 0 280px; /* Fixed width for the sidebar */
   margin-right: 1rem; /* Space between the tab and the content */
-  background-color: #f4f4f4;
-  padding: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
+  background-color: white;
+  padding-top: 20px;
   overflow-y: auto;
   height: 100%; /* Full height */
   box-sizing: border-box;
@@ -356,4 +355,19 @@
 
 .TabView {
   height: 100%; /* Ensures TabView takes the full container height */
+}
+
+.phenotype-section {
+  display: none;
+}
+
+.phenotype-section.visible {
+  display: block;
+  width: 40vw;
+  height: 100%;
+  position: relative;
+}
+
+.phenotype-section.hidden {
+  display: none;
 }

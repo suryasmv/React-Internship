@@ -1,9 +1,8 @@
 import React, { useState, useCallback } from "react";
-import { Sidebar, Button, Checkbox, Dialog } from "primereact";
+import { Button, Checkbox, Dialog } from "primereact";
 import "./Phenotype.css";
 
-const Phenotype = () => {
-  const [visiblePhenoSidebar, setVisiblePhenoSidebar] = useState(false);
+const Phenotype = ({ isPhenotypeVisible, setPhenotypeVisible }) => {
   const [selectedPhenos, setSelectedPhenos] = useState([]);
   const [visibleDialog, setVisibleDialog] = useState(false);
   const [dialogSelection, setDialogSelection] = useState([]);
@@ -14,20 +13,16 @@ const Phenotype = () => {
     { name: "Pheno 3", path: "/KHDEOMGPCSP20_Sujeet Kumar_Report (1).pdf" },
   ];
 
-  const handlePhenoSelection = useCallback((filePath) => {
-    setSelectedPhenos([filePath]);
+  const handleSingleSelection = useCallback((filePath) => {
+    setSelectedPhenos([filePath]); // Reset to only one selection
   }, []);
 
-  const handlePdfLimitChange = useCallback((limit) => {
-    if (limit === 2) {
-      setVisibleDialog(true);
-    } else {
-      setSelectedPhenos([]);
-    }
+  const handleMultipleSelection = useCallback(() => {
+    setVisibleDialog(true); // Open dialog for multiple selection
   }, []);
 
   const handleDialogSelection = useCallback(() => {
-    setSelectedPhenos(dialogSelection);
+    setSelectedPhenos(dialogSelection); // Update selected PDFs from dialog
     setVisibleDialog(false);
   }, [dialogSelection]);
 
@@ -42,117 +37,104 @@ const Phenotype = () => {
     [dialogSelection]
   );
 
-  const renderSidebar = useCallback(
-    () => (
-      <Sidebar
-        className="phenotype-sidebar-wrapper"
-        header="Phenotype Viewer"
-        visible={visiblePhenoSidebar}
-        position="right"
-        onHide={() => setVisiblePhenoSidebar(false)}
-        style={{ width: "60vw" }}
-      >
-        <div className="phenotype-controls">
-          <div
-            className="phenotype-buttons"
-            style={{ display: "flex", flexDirection: "row" }}
-          >
-            {phenotypeFiles.map((file, index) => (
-              <Button
-                key={file.name}
-                label={`Pheno ${index + 1}`}
-                className="phenotype-btn"
-                onClick={() => handlePhenoSelection(file.path)}
-              />
-            ))}
-          </div>
-        </div>
-
-        <div className="phenotype-checkboxes">
-          <div className="phenotype-checkbox-container">
-            <Checkbox
-              inputId="one"
-              checked={selectedPhenos.length === 1}
-              onChange={() => handlePdfLimitChange(1)}
-            />
-            <label htmlFor="one">1</label>
-            <Checkbox
-              inputId="two"
-              checked={selectedPhenos.length === 2}
-              onChange={() => handlePdfLimitChange(2)}
-            />
-            <label htmlFor="two">2</label>
-          </div>
-        </div>
-
-        <div
-          className="phenotype-pdf-display"
-          style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}
-        >
-          {selectedPhenos.map((filePath, index) => (
-            <iframe
-              key={index}
-              src={filePath}
-              title={filePath}
-              style={{
-                width: selectedPhenos.length === 2 ? "48%" : "48%", // 50% for two PDFs, 100% for one
-                height: "100vh", // Ensure the iframe uses full height
-                border: "none", // Remove iframe border
-              }}
-              frameBorder="0"
+  return (
+    <section
+      className={`phenotype-section ${
+        isPhenotypeVisible ? "visible" : "hidden"
+      }`}
+      style={{
+        width: "40em", // Extend by 10px
+      }}
+    >
+      <div className="phenotype-controls">
+        <div className="phenotype-buttons">
+          {phenotypeFiles.map((file) => (
+            <Button
+              key={file.name}
+              label={file.name}
+              className="phenotype-btn"
+              onClick={() => handleSingleSelection(file.path)}
             />
           ))}
         </div>
+      </div>
 
-        {visibleDialog && (
-          <Dialog
-            visible={visibleDialog}
-            onHide={() => setVisibleDialog(false)}
-            header="Select PDFs"
-            footer={
-              <div>
-                <Button
-                  label="Cancel"
-                  onClick={() => setVisibleDialog(false)}
-                  className="p-button-text"
-                />
-                <Button label="Confirm" onClick={handleDialogSelection} />
-              </div>
-            }
-          >
-            <div className="phenotype-checkbox-container">
-              {phenotypeFiles.map((file) => (
-                <div key={file.name}>
-                  <Checkbox
-                    inputId={file.name}
-                    checked={dialogSelection.includes(file.path)}
-                    disabled={
-                      dialogSelection.length >= 2 &&
-                      !dialogSelection.includes(file.path)
-                    }
-                    onChange={() => handleCheckboxChange(file.path)}
-                  />
-                  <label htmlFor={file.name}>{file.name}</label>
-                </div>
-              ))}
-            </div>
-          </Dialog>
-        )}
-      </Sidebar>
-    ),
-    [
-      visiblePhenoSidebar,
-      selectedPhenos,
-      phenotypeFiles,
-      visibleDialog,
-      dialogSelection,
-    ]
+      <div className="phenotype-checkboxes">
+        <div className="phenotype-checkbox-container">
+          <Checkbox
+            inputId="one"
+            checked={selectedPhenos.length === 1}
+            onChange={() => setSelectedPhenos([])} // Reset for single selection
+          />
+          <label htmlFor="one">1</label>
+          <Checkbox
+            inputId="two"
+            checked={selectedPhenos.length === 2}
+            onChange={handleMultipleSelection} // Open dialog for multiple selection
+          />
+          <label htmlFor="two">2</label>
+        </div>
+      </div>
+
+      <div
+        className="phenotype-pdf-display"
+        style={{
+          display: "flex",
+          gap: "10px",
+          flexWrap: "wrap",
+          width: "100%", // Extend by 10px
+        }}
+      >
+        {selectedPhenos.map((filePath, index) => (
+          <iframe
+            key={index}
+            src={filePath}
+            title={`Phenotype Report ${index + 1}`}
+            style={{
+              width: selectedPhenos.length === 2 ? "48%" : "100%",
+              height: "100vh",
+              border: "none",
+            }}
+            frameBorder="0"
+          />
+        ))}
+      </div>
+
+      <Dialog
+        visible={visibleDialog}
+        style={{ width: "50vw" }}
+        header="Select up to 2 PDFs"
+        footer={
+          <div>
+            <Button
+              label="Confirm"
+              onClick={handleDialogSelection}
+              disabled={dialogSelection.length !== 2}
+            />
+            <Button
+              label="Cancel"
+              onClick={() => setVisibleDialog(false)}
+              className="p-button-secondary"
+            />
+          </div>
+        }
+        onHide={() => setVisibleDialog(false)}
+      >
+        {phenotypeFiles.map((file) => (
+          <div key={file.name} style={{ display: "flex", alignItems: "center" }}>
+            <Checkbox
+              inputId={file.name}
+              checked={dialogSelection.includes(file.path)}
+              onChange={() => handleCheckboxChange(file.path)}
+            />
+            <label htmlFor={file.name} style={{ marginLeft: "10px" }}>
+              {file.name}
+            </label>
+          </div>
+        ))}
+      </Dialog>
+    </section>
   );
-
-  return {
-    renderSidebar,
-    toggleSidebar: () => setVisiblePhenoSidebar(!visiblePhenoSidebar),
-  };
 };
 
 export default Phenotype;

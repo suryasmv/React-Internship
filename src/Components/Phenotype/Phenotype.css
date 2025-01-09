@@ -44,7 +44,6 @@
 }
 
 .phenotype-pdf iframe {
-  width: 45%;
   background-color: rgb(247, 249, 251);
   height: 600px;
   border: none;
@@ -89,3 +88,21 @@
 .phenotype-btn:hover {
   background-color: #005bb5;
 }
+
+.phenotype-section.hidden {
+  display: none;
+}
+
+.phenotype-section.visible {
+  display: block;
+  width: 90em; /* Adjust width based on design */
+  transition: all 0.3s ease; /* Smooth transition for better UX */
+}
+
+.phenotype-pdf-display {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  width: calc(100% + 10px); /* Extend width by 10px */
+}
+
