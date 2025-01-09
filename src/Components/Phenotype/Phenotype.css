@@ -1,75 +1,91 @@
-.phenotype {
-    
-    /* align-items: center; */
-    background: url('./stethoscope-doctor-s-desk_23-2147652338.jpg');
-    background-position: bottom;
-    background-size: cover;
-    background-repeat: no-repeat;
+/* General Phenotype styles */
+.phenotype-wrapper {
+  background: url('./stethoscope-doctor-s-desk_23-2147652338.jpg');
+  background-position: bottom;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
 
-    /* justify-content: flex-start; */
-    height: 100vh; /* Adjust as needed */
-  }
-  
-  .open_picker {
-   
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 7vh;
-    /* Adjust as needed */
-  }
-  .selectedfiles{
-    cursor: pointer;
-  }
-  .pdf_viewer {
-    margin-top: 20px; /* Adjust as needed */
-  }
-  
-  /* Phenotype.css */
+/* Sidebar Styling */
+.phenotype-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 10px;
+}
 
+.phenotype-buttons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+}
 
-.selected_files {
+.phenotype-checkboxes {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.phenotype-checkbox-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* PDF Viewer styles */
+.phenotype-pdf-display {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.phenotype-pdf iframe {
+  width: 45%;
+  background-color: rgb(247, 249, 251);
+  height: 600px;
+  border: none;
+}
+
+.selected-phenotype-files {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   margin-bottom: 20px;
 }
 
-.selected_files > div {
+.selected-phenotype-files > div {
   margin: 5px;
   padding: 10px;
   background-color: #f0f0f0;
   border-radius: 5px;
 }
 
-.pdf_viewers {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.pdf_viewer {
-  width: 100%;
-  margin: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #f0f0f0;
-}
-.pdf_viewer iframe {
-  width: 100%;
-  background-color: rgb(247, 249, 251);
-  height: 900px;
-  border: none; /* Remove default iframe border */
-}
-.remove-icon {
+.remove-phenotype-icon {
   cursor: pointer;
-  margin-left: 8px; /* Space between file name and icon */
-  display: inline-block; /* Ensure it behaves like a button */
-  vertical-align: middle; /* Aligns the icon vertically with text */
+  margin-left: 8px;
+  display: inline-block;
+  vertical-align: middle;
 }
 
-.remove-icon img {
-  width: 20px; /* Adjust size as needed */
-  height: 20px; /* Adjust size as needed */
+.remove-phenotype-icon img {
+  width: 20px;
+  height: 20px;
+}
+
+
+
+/* Add other component-specific styles if needed */
+
+
+/* Button and Checkbox Styles */
+.phenotype-btn {
+  margin-right: 10px;
+}
+
+.phenotype-btn:hover {
+  background-color: #005bb5;
 }

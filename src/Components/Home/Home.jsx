@@ -48,11 +48,11 @@ const Home = () => {
         <div className="headname">
           <div className='heading'>Welcome to the <img src={SvgImage} alt="" className='logo_home' /> Medical Dashboard</div>
         </div>
-        <div className="subheadname">
+        {/* <div className="subheadname">
           Pick where you want to do analysis
-        </div>
+        </div> */}
         <div className='Options'>
-          <Card title="Phenotype" header={headerPheno} style={{ width: '300px', marginBottom: '20px' }} onClick={redirectPheno} />
+          {/* <Card title="Phenotype" header={headerPheno} style={{ width: '300px', marginBottom: '20px' }} onClick={redirectPheno} /> */}
 
 
           <Card title="Genotype" header={headerGeno} style={{ width: '300px', marginBottom: '20px' }} onClick={redirectGeno} />

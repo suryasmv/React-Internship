@@ -21,7 +21,7 @@ function App(){
        <Route path="/" element={<Form/>}/>
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>}/>
        <Route path="/home" element={<ProtectedRoute><Home/></ProtectedRoute>}/>
-       <Route path="/pdf_view" element={<ProtectedRoute><Pheno/></ProtectedRoute>}/>
+       {/* <Route path="/pdf_view" element={<ProtectedRoute><Pheno/></ProtectedRoute>}/> */}
        {/* <Route path="/patient_id" element={<ProtectedRoute><PatientID/></ProtectedRoute>}/> */}
        <Route path="/columns_selection" element={<ProtectedRoute><Columns/></ProtectedRoute>}/>
        {/* <Route path="/conditions" element={<ProtectedRoute><Preferences/></ProtectedRoute>}/> */}

@@ -20,6 +20,7 @@ const icons = {
     "gnomADg": "📊"
 };
 
+
 const Options = {
     Default: ["rsID","Gene Name","Gene Score", "Lit", "CH", "POS", "ref", "alt", "Zygosity", "Consequence", "Conseq score", "clin sig"],
     "Population Frequencies": ["AFR_AF", "AMR_AF", "EAS_AF", "EUR_AF", "SAS_AF", "gnomADe_AF", "gnomADg_AF", "MAX_AF", "MAX_AF_POPS"],
@@ -93,7 +94,7 @@ const Columns = () => {
         <div className='bg'>
             <div className="user_img_col">
        
-          <Button label='Conditions' onClick={handleGoback} className='gobackcol' />
+          {/* <Button label='Conditions' onClick={handleGoback} className='gobackcol' /> */}
           <Button label="Logout" onClick={handleLogout}/>
         </div>
             <div className="navbar">

@@ -1,151 +1,158 @@
-import React, { useState, useEffect } from "react";
-import GoogleDrivePicker from "google-drive-picker";
-import { Button } from 'primereact/button';
-import removeIcon from './x.png'; // Import your PNG icon
-import './Phenotype.css';
-import { Navigate, SvgImage } from "../Libraries/Libraries";
+import React, { useState, useCallback } from "react";
+import { Sidebar, Button, Checkbox, Dialog } from "primereact";
+import "./Phenotype.css";
 
-function App() {
-  const [authToken, setAuthToken] = useState("");
-  const [openPicker, authRes] = GoogleDrivePicker({ viewMimeTypes: 'application/pdf' });
-  const [selectedFiles, setSelectedFiles] = useState([]);
-  const [selectedFileIndexes, setSelectedFileIndexes] = useState([]);
-  const [goback, setogback] = useState(false);
-  const [logout, setlogout] = useState(false);
+const Phenotype = () => {
+  const [visiblePhenoSidebar, setVisiblePhenoSidebar] = useState(false);
+  const [selectedPhenos, setSelectedPhenos] = useState([]);
+  const [visibleDialog, setVisibleDialog] = useState(false);
+  const [dialogSelection, setDialogSelection] = useState([]);
 
-  const handleOpenPicker = () => {
-    openPicker({
-      clientId: "495587796363-prf3o1372ce2e1bf67cflu7kn4h0hdrg.apps.googleusercontent.com",
-      developerKey: "AIzaSyBTILom7XmvEx6UyVAztR4Kh4nkuiSjhSo",
-      viewId: "FOLDERS" | "PDFS",
-      token: authToken,
-      showUploadView: false,
-      showUploadFolders: false,
-      supportDrives: true,
-      viewMimeTypes: 'application/pdf',
-      multiselect: true,
-      customScopes: ['https://www.googleapis.com/auth/drive.readonly'],
-      callbackFunction: (data) => {
-        if (data.docs && data.docs.length > 0) {
-          setSelectedFiles(data.docs);
-          setSelectedFileIndexes(data.docs.map((_, index) => index)); // Set all selected file indexes
-        } else if (data.action === 'cancel') {
-          console.log('User clicked cancel/close button');
-        }
-      },
-    });
-  };
+  const phenotypeFiles = [
+    { name: "Pheno 1", path: "/KHDEOMGPCSP8_Sreeram Reddy Vanga_Report.pdf" },
+    { name: "Pheno 2", path: "/KHDEOMGPCSP17_Warren Alemao_Report.pdf" },
+    { name: "Pheno 3", path: "/KHDEOMGPCSP20_Sujeet Kumar_Report (1).pdf" },
+  ];
 
-  useEffect(() => {
-    if (authRes) {
-      const accessToken = authRes.access_token;
-      // Fetch user info to get email address
-      fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-        .then(response => response.json())
-        .then(data => {
-          const userEmail = data.email;
-          // Check if user email ends with "@genepowerx.com"
-          if (userEmail && userEmail.endsWith("@genepowerx.com")) {
-            setAuthToken(accessToken);
-          } else {
-            console.log("Access denied: User's email does not end with '@genepowerx.com'");
-          }
-        })
-        .catch(error => console.error("Error fetching user info:", error));
+  const handlePhenoSelection = useCallback((filePath) => {
+    setSelectedPhenos([filePath]);
+  }, []);
+
+  const handlePdfLimitChange = useCallback((limit) => {
+    if (limit === 2) {
+      setVisibleDialog(true);
+    } else {
+      setSelectedPhenos([]);
     }
-  }, [authRes]);
+  }, []);
 
-  if (goback) {
-    return <Navigate to='/home' />;
-  }
+  const handleDialogSelection = useCallback(() => {
+    setSelectedPhenos(dialogSelection);
+    setVisibleDialog(false);
+  }, [dialogSelection]);
 
-  const handlegoback = () => {
-    setogback(true);
-  };
+  const handleCheckboxChange = useCallback(
+    (filePath) => {
+      if (dialogSelection.includes(filePath)) {
+        setDialogSelection(dialogSelection.filter((path) => path !== filePath));
+      } else if (dialogSelection.length < 2) {
+        setDialogSelection([...dialogSelection, filePath]);
+      }
+    },
+    [dialogSelection]
+  );
 
-  if (logout) {
-    return <Navigate to="/" />;
-  }
-
-  const handleLogout = () => {
-    // Clear authentication-related cookies
-    document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-
-    // Redirect to login page
-    setlogout(true);
-  };
-
-  const handleRemoveFile = (index) => {
-    const updatedFiles = selectedFiles.filter((_, i) => i !== index);
-    const updatedIndexes = selectedFileIndexes.filter(i => i !== index);
-
-    // Adjust indexes after removing a file
-    setSelectedFiles(updatedFiles);
-    setSelectedFileIndexes(updatedIndexes.map(i => (i > index ? i - 1 : i))); // Decrement index for remaining items
-  };
-
-  return (
-    <div className="phenotype">
-      <div className="navbar">
-        <div className="user_img_pref">
-          <Button label='Home' className='goback_button' onClick={handlegoback} />
-          <Button label="Logout" onClick={handleLogout} />
-        </div>
-        <div className="doctor_navbar">
-          <img src={SvgImage} alt='logo' />
-        </div>
-      </div>
-      <div className='containerpdf'>
-        <div className='open_picker'>
-          <Button onClick={() => handleOpenPicker()}>Open Phenotype Files</Button>
+  const renderSidebar = useCallback(
+    () => (
+      <Sidebar
+        className="phenotype-sidebar-wrapper"
+        header="Phenotype Viewer"
+        visible={visiblePhenoSidebar}
+        position="right"
+        onHide={() => setVisiblePhenoSidebar(false)}
+        style={{ width: "60vw" }}
+      >
+        <div className="phenotype-controls">
+          <div
+            className="phenotype-buttons"
+            style={{ display: "flex", flexDirection: "row" }}
+          >
+            {phenotypeFiles.map((file, index) => (
+              <Button
+                key={file.name}
+                label={`Pheno ${index + 1}`}
+                className="phenotype-btn"
+                onClick={() => handlePhenoSelection(file.path)}
+              />
+            ))}
+          </div>
         </div>
 
-        <div className='selected_files'>
-          {selectedFiles.map((file, index) => (
-            <div key={index} className="selectedfiles">
-              {file.name}
-              <span className="remove-icon" onClick={() => handleRemoveFile(index)}>
-                <img src={removeIcon} alt="Remove" />
-              </span>
-            </div>
+        <div className="phenotype-checkboxes">
+          <div className="phenotype-checkbox-container">
+            <Checkbox
+              inputId="one"
+              checked={selectedPhenos.length === 1}
+              onChange={() => handlePdfLimitChange(1)}
+            />
+            <label htmlFor="one">1</label>
+            <Checkbox
+              inputId="two"
+              checked={selectedPhenos.length === 2}
+              onChange={() => handlePdfLimitChange(2)}
+            />
+            <label htmlFor="two">2</label>
+          </div>
+        </div>
+
+        <div
+          className="phenotype-pdf-display"
+          style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}
+        >
+          {selectedPhenos.map((filePath, index) => (
+            <iframe
+              key={index}
+              src={filePath}
+              title={filePath}
+              style={{
+                width: selectedPhenos.length === 2 ? "48%" : "48%", // 50% for two PDFs, 100% for one
+                height: "100vh", // Ensure the iframe uses full height
+                border: "none", // Remove iframe border
+              }}
+              frameBorder="0"
+            />
           ))}
         </div>
 
-        <div className='pdf_viewers'>
-          <div className='pdf_viewer'>
-            {selectedFileIndexes.length === 1 ? (
-              // If only one file is selected, display it full-width
-              <iframe
-                src={selectedFiles[selectedFileIndexes[0]]?.embedUrl}
-                title={`PDF Viewer ${selectedFileIndexes[0]}`}
-                width='100%'
-                height='600px'
-              />
-            ) : (
-              // If two files are selected, display them side by side
-              selectedFileIndexes.map((index, viewerIndex) => (
-                index !== null && (
-                  <iframe
-                    key={viewerIndex}
-                    src={selectedFiles[index].embedUrl}
-                    title={`PDF Viewer ${index}`}
-                    width='50%'
-                    height='600px'
-                    style={{ float: "left" }}
+        {visibleDialog && (
+          <Dialog
+            visible={visibleDialog}
+            onHide={() => setVisibleDialog(false)}
+            header="Select PDFs"
+            footer={
+              <div>
+                <Button
+                  label="Cancel"
+                  onClick={() => setVisibleDialog(false)}
+                  className="p-button-text"
+                />
+                <Button label="Confirm" onClick={handleDialogSelection} />
+              </div>
+            }
+          >
+            <div className="phenotype-checkbox-container">
+              {phenotypeFiles.map((file) => (
+                <div key={file.name}>
+                  <Checkbox
+                    inputId={file.name}
+                    checked={dialogSelection.includes(file.path)}
+                    disabled={
+                      dialogSelection.length >= 2 &&
+                      !dialogSelection.includes(file.path)
+                    }
+                    onChange={() => handleCheckboxChange(file.path)}
                   />
-                )
-              ))
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
+                  <label htmlFor={file.name}>{file.name}</label>
+                </div>
+              ))}
+            </div>
+          </Dialog>
+        )}
+      </Sidebar>
+    ),
+    [
+      visiblePhenoSidebar,
+      selectedPhenos,
+      phenotypeFiles,
+      visibleDialog,
+      dialogSelection,
+    ]
   );
-}
 
-export default App;
+  return {
+    renderSidebar,
+    toggleSidebar: () => setVisiblePhenoSidebar(!visiblePhenoSidebar),
+  };
+};
+
+export default Phenotype;

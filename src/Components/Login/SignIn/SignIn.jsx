@@ -65,7 +65,7 @@ const SignInForm = () => {
               setCookie('accessToken', credentialResponse.credential); // Expires in 7 days
               setCookie('email', email); // Expires in 7 days
               console.log(credentialResponse);
-              if (email.endsWith('genepowerx.com')) {
+              if (email.endsWith('gmail.com')) {
                 setgottoHome(true);
               } else {
                 console.log('Email domain is not allowed.');
