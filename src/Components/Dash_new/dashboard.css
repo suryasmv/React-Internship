@@ -133,7 +133,7 @@
   font-weight: 700;
   font-size: larger;
   font-style: normal;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   cursor: pointer;
   color: white;
 }
@@ -240,6 +240,7 @@
 }
 
 .conditiontitle {
+  font-size: 20px;
   margin: 0px;
 }
 .multiple_cards .card_to_display {
@@ -264,6 +265,15 @@
   overflow-y: auto;
   height: 100%; /* Full height */
   box-sizing: border-box;
+}
+
+.p-card-content{
+  margin: 0;
+  padding: 0;
+}
+
+.p-card-body {
+  padding-top: 0;
 }
 
 .single_card .card-content {
@@ -371,3 +381,31 @@
 .phenotype-section.hidden {
   display: none;
 }
+
+.severity-buttons,
+.extra-buttons-style {
+  display: flex;
+  justify-content: flex-start; /* Distribute buttons evenly */
+  gap: 15px; /* Add space between buttons */
+  margin-top: 20px; /* Add space above the button group */
+  flex-wrap: wrap; /* Ensure buttons wrap on smaller screens */
+}
+
+.severity-buttons button,
+.extra-buttons-style button {
+  padding: 10px 20px; /* Add padding to buttons for better click area */
+  font-size: 14px; /* Set font size for readability */
+  border: 1px solid #ccc; /* Add border for button definition */
+  border-radius: 5px; /* Smooth edges for a modern look */
+  background-color: #fff; /* White background for buttons */
+  color: #000; /* Black text color */
+  cursor: pointer; /* Pointer cursor for better UX */
+  transition: background-color 0.3s, color 0.3s; /* Smooth hover effect */
+}
+
+.severity-buttons button:hover,
+.extra-buttons-style button:hover {
+  background-color: #f0f0f0; /* Slightly darker white for hover effect */
+  color: #000; /* Keep text black on hover */
+}
+

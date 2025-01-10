@@ -43,7 +43,8 @@ const Phenotype = ({ isPhenotypeVisible, setPhenotypeVisible }) => {
         isPhenotypeVisible ? "visible" : "hidden"
       }`}
       style={{
-        width: "40em", // Extend by 10px
+        width: "30em", // Extend by 10px
+        margin: "20px"
       }}
     >
       <div className="phenotype-controls">
