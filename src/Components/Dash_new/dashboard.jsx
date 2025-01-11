@@ -34,6 +34,10 @@ import { Navigate } from "../Libraries/Libraries";
 import "./dashboard.css";
 import DashboardSearch from "./Dash_search/DashboardSearch";
 import Phenotype from "../../Components/Phenotype/Phenotype";
+import MultiConditionButton from "./Reusable Components/MultiConditionButton";
+import SideBarContainer from "./Reusable Components/SideBarContainer";
+import MainContentData from "./Reusable Components/MainContentData";
+import ReportHandleButton from "./Reusable Components/ReportHandleButton";
 
 const Task = ({ id, title }) => {
   const { attribute, listeners, setNodeRef, transform, transition } =
@@ -555,14 +559,24 @@ const Dashboard = () => {
 
     return (
       <div>
-        <TabView scrollable style={{ overflowY: "hidden" }}>
+        <TabView scrollable>
           {conditionData.subcategories.map((subcategory, index) => (
-            <TabPanel key={index} header={subcategory.name}>
+            <TabPanel
+              key={index}
+              header={
+                <span style={{ fontSize: "14px" }}>{subcategory.name}</span>
+              }
+            >
               {subcategory.subtype ? (
-                <TabView scrollable style={{ overflowY: "hidden" }}>
+                <TabView scrollable>
                   {subcategory.subtype.map((subtype, subtypeIndex) => (
-                    <TabPanel key={subtypeIndex} header={subtype.name}>
-                      <div>
+                    <TabPanel
+                      key={subtypeIndex}
+                      header={
+                        <span style={{ fontSize: "14px" }}>{subtype.name}</span>
+                      }
+                    >
+                      <div className="datatable-container">
                         <DataTable
                           value={data.filter(
                             (item) =>
@@ -570,17 +584,14 @@ const Dashboard = () => {
                               item.Condition === subtype.name &&
                               item.subtype_cond === conditionTitle
                           )}
-                          scrollable
                           reorderableColumns
                           resizableColumns
+                          className="doctor-datatable"
                           sortMode="multiple"
                           globalFilterFields={selectedColumns}
-                          className={
-                            cardsToDisplay === 1
-                              ? "single_datatable"
-                              : "multiple_datatable"
-                          }
-                          style={{ maxHeight: "none" }} // Disable max height and vertical overflow
+                          style={{
+                            fontSize: "14px", // Reduce font size of data
+                          }}
                         >
                           {selectedColumns.map((columnName, index) => (
                             <Column
@@ -592,6 +603,7 @@ const Dashboard = () => {
                                   style={{
                                     whiteSpace: "normal",
                                     textAlign: "center",
+                                    fontSize: "12px", // Reduced font size for header
                                   }}
                                 >
                                   {columnName.split(" ").map((part, i) => (
@@ -603,14 +615,8 @@ const Dashboard = () => {
                                 let content;
                                 if (typeof rowData[columnName] === "string") {
                                   const names = rowData[columnName].split(",");
-                                  const namePairs = [];
-                                  for (let i = 0; i < names.length; i += 2) {
-                                    namePairs.push(
-                                      names.slice(i, i + 2).join(",")
-                                    );
-                                  }
-                                  content = namePairs.map((pair, i) => (
-                                    <div key={i}>{pair}</div>
+                                  content = names.map((name, i) => (
+                                    <div key={i}>{name}</div>
                                   ));
                                 } else if (
                                   typeof rowData[columnName] === "number"
@@ -620,11 +626,18 @@ const Dashboard = () => {
                                   content = "";
                                 }
                                 return (
-                                  <div style={{ whiteSpace: "normal" }}>
+                                  <div
+                                    style={{
+                                      whiteSpace: "normal",
+                                      textAlign: "left",
+                                      fontSize: "14px", // Reduce the font size for the data
+                                    }}
+                                  >
                                     {content}
                                   </div>
                                 );
                               }}
+                              style={{ minWidth: "150px", textAlign: "center" }}
                             />
                           ))}
                         </DataTable>
@@ -641,6 +654,7 @@ const Dashboard = () => {
       </div>
     );
   };
+
   if (logout) {
     return <Navigate to="/" />;
   }
@@ -687,9 +701,7 @@ const Dashboard = () => {
     <div className="dashboard">
       <div className="card_navbar">
         <img src={SvgImage} alt="" />
-
         <DashboardSearch patients={patients} />
-
         <div className="right_items">
           <div className="fullscreen" onClick={toggleFullScreen}>
             <img
@@ -698,76 +710,21 @@ const Dashboard = () => {
               className="fullicon"
             />
           </div>
-
-          <div className="multi_b">
-            <Button
-              onClick={() => setPopupVisible(true)}
-              className=""
-              label="Multi-Condition"
-            />
-            <Dialog
-              className="Dialog_hear"
-              header="Multiple Conditions"
-              visible={popupVisible}
-              onHide={() => setPopupVisible(false)}
-            >
-              <DndContext
-                sensors={sensors}
-                onDragEnd={handleDragEnd}
-                collisionDetection={closestCorners}
-              >
-                <SortableContext items={preferences}>
-                  {preferences.map((task) => (
-                    <Task key={task.id} id={task.id} title={task.title} />
-                  ))}
-                </SortableContext>
-              </DndContext>
-              <div className="submit_multiconditions">
-                <Button onClick={handleSubmit} label="Submit" />
-              </div>
-            </Dialog>
-          </div>
-
-          <div className="report_b">
-            <Button
-              className=""
-              onClick={() => setVisibleData(true)}
-              label="Report"
-            />
-          </div>
+          <MultiConditionButton
+            preferences={preferences}
+            sensors={sensors}
+            handleDragEnd={handleDragEnd}
+            closestCorners={closestCorners}
+            handleSubmit={handleSubmit}
+          />
 
           {/* Dialog Popup */}
-          <Dialog
-            header="Submitted Data"
-            visible={visibleData}
-            style={{ width: "50vw" }}
-            onHide={() => setVisibleData(false)}
-          >
-            <div className="popup-content">
-              {submittedData.length === 0 ? (
-                <p>No data submitted yet.</p>
-              ) : (
-                <ul>
-                  {submittedData.map((item, index) => (
-                    <li key={index} className="submitted-item">
-                      <span>
-                        {item.condition}, Severity: {item.severity}, Concern:{" "}
-                        {item.Concern}, No Mutation: {item.NoMutation}
-                      </span>
-                      <Button
-                        label="Remove"
-                        className="p-button-danger"
-                        onClick={() => handleRemove(index)}
-                      />
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            <div className="download-section">
-              <Button label="Download" onClick={handleDownload} />
-            </div>
-          </Dialog>
+          <ReportHandleButton
+            submittedData={submittedData}
+            handleRemove={handleRemove}
+            handleDownload={handleDownload}
+          />
+
           <div className="Back">
             <Button
               label="Columns"
@@ -775,18 +732,6 @@ const Dashboard = () => {
               onClick={handlegotocol}
             />
           </div>
-
-          <div className="dashboard">
-            {/* Phenotype Button */}
-            {/* <div className="phenotype-toggle">
-              <Button
-                label="Phenotype"
-                className="goback_col"
-                onClick={() => setPhenotypeVisible(!isPhenotypeVisible)}
-              />
-            </div> */}
-          </div>
-
           <div
             className="user_pi"
             onMouseEnter={() => setHovered(true)}
@@ -802,170 +747,40 @@ const Dashboard = () => {
       </div>
 
       <div className="conditions_cards">
-        {cardsToDisplay > 1 && (
-          <div className="multiple_cards">
-            {prefer.slice(0, cardsToDisplay).map((pp, index) => (
-              <div key={index} className="card_to_display">
-                <Card className="cards_condition">
-                  <div className="card-content">
-                    <h1 className="conditiontitle">
-                      {pp.title.replace(/_/g, " ")}
-                    </h1>
-                    <div>{RenderTabViewContent(pp.title)}</div>
-                  </div>
-                </Card>
-              </div>
-            ))}
-          </div>
-        )}
         {cardsToDisplay === 1 && (
-          <div className="single_card">
-            <div className="cards_side_close">
-              <Card className="cards_condition">
-                {/* Tab and content container */}
-                <div className="side-content-container">
-                  {/* Sidebar with conditions */}
-                  <div
-                    visible={visibleleft}
-                    position="left"
-                    onHide={() => setVisibleleft(false)}
-                    className="side-conditions-tab"
-                  >
-                    {sidebarprefer.map((preference, index) => (
-                      <button
-                        key={index}
-                        className="sidebar_buttons"
-                        onClick={() => handleSingleCodnition(preference.title)}
-                      >
-                        {preference.title}
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* Main content area */}
-                  <div>
-                    <div
-                      className="card-content"
-                      style={{
-                        width: isPhenotypeVisible ? "43.5em" : "75em",
-                      }}
-                    >
-                      <h1 className="conditiontitle">
-                        {selectedCondition
-                          ? selectedCondition.replace(/_/g, " ")
-                          : " "}
-                      </h1>
-                      <div className="extra-buttons-style">
-                        <Button
-                          style={{
-                            color: "black",
-                            backgroundColor: submittedData.find(
-                              (entry) =>
-                                entry.condition === selectedCondition &&
-                                entry.Concern === "Yes"
-                            )
-                              ? "red"
-                              : "initial",
-                          }}
-                          onClick={() => handleSeverityClick(null, "Concern")}
-                        >
-                          Concern
-                        </Button>
-                        <Button
-                          style={{
-                            color: "black",
-                            backgroundColor: submittedData.find(
-                              (entry) =>
-                                entry.condition === selectedCondition &&
-                                entry.NoMutation === "Yes"
-                            )
-                              ? "red"
-                              : "initial",
-                          }}
-                          onClick={() =>
-                            handleSeverityClick(null, "NoMutation")
-                          }
-                        >
-                          No Mutation
-                        </Button>
-                      </div>
-                      {/* Severity Selection */}
-                      <div className="severity-buttons">
-                        <Button
-                          style={{
-                            backgroundColor: submittedData.find(
-                              (entry) =>
-                                entry.condition === selectedCondition &&
-                                entry.severity === "Low"
-                            )
-                              ? "red"
-                              : "initial",
-                          }}
-                          onClick={() => handleSeverityClick("Low", "severity")}
-                        >
-                          Low
-                        </Button>
-                        <Button
-                          style={{
-                            backgroundColor: submittedData.find(
-                              (entry) =>
-                                entry.condition === selectedCondition &&
-                                entry.severity === "Mild"
-                            )
-                              ? "red"
-                              : "initial",
-                          }}
-                          onClick={() =>
-                            handleSeverityClick("Mild", "severity")
-                          }
-                        >
-                          Mild
-                        </Button>
-                        <Button
-                          style={{
-                            backgroundColor: submittedData.find(
-                              (entry) =>
-                                entry.condition === selectedCondition &&
-                                entry.severity === "Moderate"
-                            )
-                              ? "red"
-                              : "initial",
-                          }}
-                          onClick={() =>
-                            handleSeverityClick("Moderate", "severity")
-                          }
-                        >
-                          Moderate
-                        </Button>
-                        <Button
-                          style={{
-                            backgroundColor: submittedData.find(
-                              (entry) =>
-                                entry.condition === selectedCondition &&
-                                entry.severity === "Moderate to High"
-                            )
-                              ? "red"
-                              : "initial",
-                          }}
-                          onClick={() =>
-                            handleSeverityClick("Moderate to High", "severity")
-                          }
-                        >
-                          Moderate to High
-                        </Button>
-                      </div>
-
-                      <div>{RenderTabViewContent(selectedCondition)}</div>
-                    </div>
-                  </div>
-                  <div>
-                    <Phenotype
-                      isPhenotypeVisible={isPhenotypeVisible}
-                      setPhenotypeVisible={setPhenotypeVisible}
-                    />
-                  </div>
+          <div className="side-content-container">
+            {/* All three containers displayed side by side */}
+            <div className="cards-container">
+              {/* Sidebar container */}
+              {sidebarprefer && (
+                <div className="card sidebar">
+                  <SideBarContainer
+                    visibleleft={visibleleft}
+                    setVisibleleft={setVisibleleft}
+                    sidebarprefer={sidebarprefer}
+                    handleSingleCodnition={handleSingleCodnition}
+                  />
                 </div>
-              </Card>
+              )}
+
+              {/* Main content container */}
+              <div className="card main-content">
+                <MainContentData
+                  selectedCondition={selectedCondition}
+                  isPhenotypeVisible={isPhenotypeVisible}
+                  submittedData={submittedData}
+                  handleSeverityClick={handleSeverityClick}
+                  RenderTabViewContent={RenderTabViewContent}
+                />
+              </div>
+
+              {/* Phenotype container */}
+              <div className="card phenotype-section">
+                <Phenotype
+                  isPhenotypeVisible={isPhenotypeVisible}
+                  setPhenotypeVisible={setPhenotypeVisible}
+                />
+              </div>
             </div>
           </div>
         )}

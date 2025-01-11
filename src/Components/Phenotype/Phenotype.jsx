@@ -43,8 +43,8 @@ const Phenotype = ({ isPhenotypeVisible, setPhenotypeVisible }) => {
         isPhenotypeVisible ? "visible" : "hidden"
       }`}
       style={{
-        width: "30em", // Extend by 10px
-        margin: "20px"
+        width: "28em", // Extend by 10px
+        margin: "20px",
       }}
     >
       <div className="phenotype-controls">
@@ -57,23 +57,22 @@ const Phenotype = ({ isPhenotypeVisible, setPhenotypeVisible }) => {
               onClick={() => handleSingleSelection(file.path)}
             />
           ))}
-        </div>
-      </div>
-
-      <div className="phenotype-checkboxes">
-        <div className="phenotype-checkbox-container">
-          <Checkbox
-            inputId="one"
-            checked={selectedPhenos.length === 1}
-            onChange={() => setSelectedPhenos([])} // Reset for single selection
-          />
-          <label htmlFor="one">1</label>
-          <Checkbox
-            inputId="two"
-            checked={selectedPhenos.length === 2}
-            onChange={handleMultipleSelection} // Open dialog for multiple selection
-          />
-          <label htmlFor="two">2</label>
+          <div className="phenotype-checkboxes">
+            <div className="phenotype-checkbox-container">
+              <Checkbox
+                inputId="one"
+                checked={selectedPhenos.length === 1}
+                onChange={() => setSelectedPhenos([])} // Reset for single selection
+              />
+              <label htmlFor="one">1</label>
+              <Checkbox
+                inputId="two"
+                checked={selectedPhenos.length === 2}
+                onChange={handleMultipleSelection} // Open dialog for multiple selection
+              />
+              <label htmlFor="two">2</label>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -122,7 +121,10 @@ const Phenotype = ({ isPhenotypeVisible, setPhenotypeVisible }) => {
         onHide={() => setVisibleDialog(false)}
       >
         {phenotypeFiles.map((file) => (
-          <div key={file.name} style={{ display: "flex", alignItems: "center" }}>
+          <div
+            key={file.name}
+            style={{ display: "flex", alignItems: "center" }}
+          >
             <Checkbox
               inputId={file.name}
               checked={dialogSelection.includes(file.path)}

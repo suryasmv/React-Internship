@@ -1,0 +1,22 @@
+/* Sidebar button styles */
+.sidebar-button {
+  background-color: #063767; /* Darker background color for buttons */
+  color: white; /* Button text color */
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left; /* Align text to the left */
+  transition: background-color 0.3s ease;
+  width: 100%; /* Make the button take full width of the sidebar */
+}
+
+/* Selected button styles */
+.sidebar-button.selected {
+  background-color: #1abc9c; /* Background color for selected button */
+}
+
+.sidebar-button:hover {
+  background-color: #1abc9c; /* Lighter hover color */
+}
