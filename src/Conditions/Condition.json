@@ -2,6 +2,7 @@
     "conditions": [
         {
             "name": "Diabetes",
+            "icon": "Icons/Skin Icon.png",
             "subcategories": [
                 {
                     "name": "Predisposition for diabetes",

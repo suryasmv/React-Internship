@@ -1,462 +1,487 @@
 {
-    "conditions":[
+  "conditions": [
+    {
+      "name": "Skin_Health",
+      "icon": "Icons/Skin Icon.png",
+      "subcategories": [
         {
-            "name": "Skin_Health",
-            "subcategories": [
-                {
-                    "name": "Skin Health",
-                    "subtype": [
-                        {
-                            "name": "Other Skin Conditions "
-                        },
-                        {
-                            "name": "Dry Skin/fragile skin"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Cardiac_Health",
-            "subcategories": [
-                {
-                    "name": "Cardiac",
-                    "subtype": [
-                        {
-                            "name": "Coronary artery disease risk"
-                        },
-                        {
-                            "name": "Hypertrophic cardiomyopathy risk"
-                        },
-                        {
-                            "name": "Cardiac Channelopathies"
-                        },
-                        {
-                            "name": "Ventricular Arrhythmia"
-                        }
-                    ]
-                },
-                {
-                    "name": "Arrhythmia",
-                    "subtype": [
-                        {
-                            "name": "Atrial fibrillation"
-                        },
-                        {
-                            "name": "Long QT syndrome"
-                        },
-                        {
-                            "name": "Brugada Syndrome"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Cholesterol_Disorders",
-            "subcategories": [
-                {
-                    "name": "Cholesterol disorders",
-                    "subtype": [
-                        {
-                            "name": "Polygenic (Familial combined, small dense LDL, Miscellaneous)"
-                        },
-                        {
-                            "name": "Hypertriglyceridemia"
-                        },
-                        {
-                            "name": "Familial Hypercholesterolemia"
-                        },
-                        {
-                            "name": "Monogenic/ Familial Hypercholesterolemia"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Gall_stones",
-            "subcategories": [
-                {
-                    "name": "Gallstones",
-                    "subtype": [
-                        {
-                            "name": "Gallstones"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Diabetes",
-            "subcategories": [
-                {
-                    "name": "Predisposition for diabetes",
-                    "subtype": [
-                        {
-                            "name": "Type 2 Diabetes"
-                        },
-                        {
-                            "name": "Type 1 Diabetes"
-                        }
-                    ]
-                },
-                {
-                    "name": "Risk factors for type of diabetes- Monogenic type",
-                    "subtype": [
-                        {
-                            "name": "Maturity onset diabetes mellitus in young"
-                        }
-                    ]
-                },
-                {
-                    "name": "Diabetic Retinopathy",
-                    "subtype": [
-                        {
-                            "name": "Diabetic Retinopathy"
-                        }
-                    ]
-                },
-                {
-                    "name": "Diabetic Nephropathy",
-                    "subtype": [
-                        {
-                            "name": "Diabetic Nephropathy"
-                        },
-                        {
-                            "name": "Diabetic Neuropathy"
-                        }
-                    ]
-                },
-                {
-                    "name": "Risk of Heart Disease",
-                    "subtype": [
-                        {
-                            "name": "Risk of Heart Disease"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Obesity",
-            "subcategories": [
-                {
-                    "name": "Obesity",
-                    "subtype": [
-                        {
-                            "name": "Obesity"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Glomerular_Diseases",
-            "subcategories": [
-                {
-                    "name": "Glomerular Diseases",
-                    "subtype": [
-                        {
-                            "name": "Renal tubular dysgenesis"
-                        },
-                        {
-                            "name": "Focal segmental glomerulosclerosis"
-                        },
-                        {
-                            "name": "Diabetic kidney disease"
-                        },
-                        {
-                            "name": "Systemic lupus erythematosus (SLE)"
-                        },
-                        {
-                            "name": "Membranoproliferative Glomerulonephritis"
-                        },
-                        {
-                            "name": "Minimal change disease"
-                        },
-                        {
-                            "name": "Membranous nephropathy"
-                        },
-                        {
-                            "name": "Congenital anomaly of kidney and urinary tract"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Thyroid_Disorders",
-            "subcategories": [
-                {
-                    "name": "Thyroid",
-                    "subtype": [
-                        {
-                            "name": "Hypothyroidism"
-                        },
-                        {
-                            "name": "Hyperthyroidism (Graves Disease)"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "High_Blood_Pressure",
-            "subcategories": [
-                {
-                    "name": "Hypertension",
-                    "subtype": [
-                        {
-                            "name": "Polygenic/essential/primary Hypertension"
-                        },
-                        {
-                            "name": "Monogenic (Secondary)"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Renal_stones",
-            "subcategories": [
-                {
-                    "name": "Renal stones",
-                    "subtype": [
-                        {
-                            "name": "Renal stones"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Gastritis",
-            "subcategories": [
-                {
-                    "name": "Gastritis ",
-                    "subtype": [
-                        {
-                            "name": "Gastritis "
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Dementia",
-            "subcategories": [
-                {
-                    "name": "Dementia",
-                    "subtype": [
-                        {
-                            "name": "Alzeihmer's"
-                        },
-                        {
-                            "name": "Lewy Body"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Allergies",
-            "subcategories": [
-                {
-                    "name": "Allergies (Respiratory, Food)",
-                    "subtype": [
-                        {
-                            "name": "Ciliary dyskinesia"
-                        },
-                        {
-                            "name": "Hyper IgE"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Gut_Health",
-            "subcategories": [
-                {
-                    "name": "Gut Health",
-                    "subtype": [
-                        {
-                            "name": "Gut Health"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Headaches",
-            "subcategories": [
-                {
-                    "name": "Headaches",
-                    "subtype": [
-                        {
-                            "name": "Migraines and other headaches"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Parkinsons",
-            "subcategories": [
-                {
-                    "name": "Parkisons Disease",
-                    "subtype": [
-                        {
-                            "name": "Parkisons Disease"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Anemia ",
-            "subcategories": [
-                {
-                    "name": "Aplastic, Congenital",
-                    "subtype": [
-                        {
-                            "name": "Aplastic, Congenital"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Pancreatic_Disorders",
-            "subcategories": [
-                {
-                    "name": "Pancreatitis",
-                    "subtype": [
-                        {
-                            "name": "Pancreatitis"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Muscular_health",
-            "subcategories": [
-                {
-                    "name": "Muscular_health",
-                    "subtype": [
-                        {
-                            "name": "Muscular_health"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Bone_Joint_health",
-            "subcategories": [
-                {
-                    "name": "Bone_Joint_health",
-                    "subtype": [
-                        {
-                            "name": "Bone_Joint_health"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Mood_Disorders",
-            "subcategories": [
-                {
-                    "name": "Mood Disorder",
-                    "subtype": [
-                        {
-                            "name": "Schizophrenia"
-                        },
-                        {
-                            "name": "Anxiety"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Arthritis_Degenerative_Joint",
-            "subcategories": [
-                {
-                    "name": "Autoimmune Disorder",
-                    "subtype": [
-                        {
-                            "name": "Rheumatoid Arthritis"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Anemia",
-            "subcategories": [
-                {
-                    "name": "Aplastic, Congenital",
-                    "subtype": [
-                        {
-                            "name": "Aplastic, Congenital"
-                        }
-                    ]
-                },
-                {
-                    "name": "Hemolytic anemia",
-                    "subtype": [
-                        {
-                            "name": "Hemolytic anemia"
-                        }
-                    ]
-                },
-                {
-                    "name": "Microcytic anemia",
-                    "subtype": [
-                        {
-                            "name": "Microcytic anemia"
-                        }
-                    ]
-                },
-                {
-                    "name": "Megaloblastic anemia",
-                    "subtype": [
-                        {
-                            "name": "Megaloblastic anemia"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Interstitial_Nephritis",
-            "subcategories": [
-                {
-                    "name": "Tubular Interstitial disease, Interstitial Nephritis",
-                    "subtype": [
-                        {
-                            "name": "Tubular Interstitial disease, Interstitial Nephritis"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Fatty_Liver",
-            "subcategories": [
-                {
-                    "name": "Fatty liver",
-                    "subtype": [
-                        {
-                            "name": "Fatty liver"
-                        }
-                    ]
-                }
-            ]
+          "name": "Skin Health",
+          "subtype": [
+            {
+              "name": "Other Skin Conditions "
+            },
+            {
+              "name": "Dry Skin/fragile skin"
+            }
+          ]
         }
-    ]
+      ]
+    },
+    {
+      "name": "Cardiac_Health",
+      "icon": "Icons/Thyroid Icon.png",
+      "subcategories": [
+        {
+          "name": "Cardiac",
+          "subtype": [
+            {
+              "name": "Coronary artery disease risk"
+            },
+            {
+              "name": "Hypertrophic cardiomyopathy risk"
+            },
+            {
+              "name": "Cardiac Channelopathies"
+            },
+            {
+              "name": "Ventricular Arrhythmia"
+            }
+          ]
+        },
+        {
+          "name": "Arrhythmia",
+          "subtype": [
+            {
+              "name": "Atrial fibrillation"
+            },
+            {
+              "name": "Long QT syndrome"
+            },
+            {
+              "name": "Brugada Syndrome"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cholesterol_Disorders",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Cholesterol disorders",
+          "subtype": [
+            {
+              "name": "Polygenic (Familial combined, small dense LDL, Miscellaneous)"
+            },
+            {
+              "name": "Hypertriglyceridemia"
+            },
+            {
+              "name": "Familial Hypercholesterolemia"
+            },
+            {
+              "name": "Monogenic/ Familial Hypercholesterolemia"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Gall_stones",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Gallstones",
+          "subtype": [
+            {
+              "name": "Gallstones"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Diabetes",
+      "icon": "Icons/Diabetes Icon.png",
+      "subcategories": [
+        {
+          "name": "Predisposition for diabetes",
+          "subtype": [
+            {
+              "name": "Type 2 Diabetes"
+            },
+            {
+              "name": "Type 1 Diabetes"
+            }
+          ]
+        },
+        {
+          "name": "Risk factors for type of diabetes- Monogenic type",
+          "subtype": [
+            {
+              "name": "Maturity onset diabetes mellitus in young"
+            }
+          ]
+        },
+        {
+          "name": "Diabetic Retinopathy",
+          "subtype": [
+            {
+              "name": "Diabetic Retinopathy"
+            }
+          ]
+        },
+        {
+          "name": "Diabetic Nephropathy",
+          "subtype": [
+            {
+              "name": "Diabetic Nephropathy"
+            },
+            {
+              "name": "Diabetic Neuropathy"
+            }
+          ]
+        },
+        {
+          "name": "Risk of Heart Disease",
+          "subtype": [
+            {
+              "name": "Risk of Heart Disease"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Obesity",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Obesity",
+          "subtype": [
+            {
+              "name": "Obesity"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Glomerular_Diseases",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Glomerular Diseases",
+          "subtype": [
+            {
+              "name": "Renal tubular dysgenesis"
+            },
+            {
+              "name": "Focal segmental glomerulosclerosis"
+            },
+            {
+              "name": "Diabetic kidney disease"
+            },
+            {
+              "name": "Systemic lupus erythematosus (SLE)"
+            },
+            {
+              "name": "Membranoproliferative Glomerulonephritis"
+            },
+            {
+              "name": "Minimal change disease"
+            },
+            {
+              "name": "Membranous nephropathy"
+            },
+            {
+              "name": "Congenital anomaly of kidney and urinary tract"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Thyroid_Disorders",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Thyroid",
+          "subtype": [
+            {
+              "name": "Hypothyroidism"
+            },
+            {
+              "name": "Hyperthyroidism (Graves Disease)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "High_Blood_Pressure",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Hypertension",
+          "subtype": [
+            {
+              "name": "Polygenic/essential/primary Hypertension"
+            },
+            {
+              "name": "Monogenic (Secondary)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Renal_stones",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Renal stones",
+          "subtype": [
+            {
+              "name": "Renal stones"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Gastritis",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Gastritis ",
+          "subtype": [
+            {
+              "name": "Gastritis "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Dementia",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Dementia",
+          "subtype": [
+            {
+              "name": "Alzeihmer's"
+            },
+            {
+              "name": "Lewy Body"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Allergies",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Allergies (Respiratory, Food)",
+          "subtype": [
+            {
+              "name": "Ciliary dyskinesia"
+            },
+            {
+              "name": "Hyper IgE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Gut_Health",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Gut Health",
+          "subtype": [
+            {
+              "name": "Gut Health"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Headaches",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Headaches",
+          "subtype": [
+            {
+              "name": "Migraines and other headaches"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Parkinsons",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Parkisons Disease",
+          "subtype": [
+            {
+              "name": "Parkisons Disease"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Anemia ",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Aplastic, Congenital",
+          "subtype": [
+            {
+              "name": "Aplastic, Congenital"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pancreatic_Disorders",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Pancreatitis",
+          "subtype": [
+            {
+              "name": "Pancreatitis"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Muscular_health",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Muscular_health",
+          "subtype": [
+            {
+              "name": "Muscular_health"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Bone_Joint_health",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Bone_Joint_health",
+          "subtype": [
+            {
+              "name": "Bone_Joint_health"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Mood_Disorders",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Mood Disorder",
+          "subtype": [
+            {
+              "name": "Schizophrenia"
+            },
+            {
+              "name": "Anxiety"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Arthritis_Degenerative_Joint",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Autoimmune Disorder",
+          "subtype": [
+            {
+              "name": "Rheumatoid Arthritis"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Anemia",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Aplastic, Congenital",
+          "subtype": [
+            {
+              "name": "Aplastic, Congenital"
+            }
+          ]
+        },
+        {
+          "name": "Hemolytic anemia",
+          "subtype": [
+            {
+              "name": "Hemolytic anemia"
+            }
+          ]
+        },
+        {
+          "name": "Microcytic anemia",
+          "subtype": [
+            {
+              "name": "Microcytic anemia"
+            }
+          ]
+        },
+        {
+          "name": "Megaloblastic anemia",
+          "subtype": [
+            {
+              "name": "Megaloblastic anemia"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Interstitial_Nephritis",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Tubular Interstitial disease, Interstitial Nephritis",
+          "subtype": [
+            {
+              "name": "Tubular Interstitial disease, Interstitial Nephritis"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Fatty_Liver",
+      "icon": "/Skin Icon.png",
+      "subcategories": [
+        {
+          "name": "Fatty liver",
+          "subtype": [
+            {
+              "name": "Fatty liver"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

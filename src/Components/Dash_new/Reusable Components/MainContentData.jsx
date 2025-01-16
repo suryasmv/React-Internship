@@ -77,7 +77,7 @@ const MainContentData = ({
                   entry.condition === selectedCondition &&
                   entry.severity === "Low"
               )
-                ? "red"
+                ? "green"
                 : "initial",
             }}
             onClick={() => handleSeverityClick("Low", "severity")}
@@ -94,7 +94,7 @@ const MainContentData = ({
                   entry.condition === selectedCondition &&
                   entry.severity === "Mild"
               )
-                ? "red"
+                ? "yellow"
                 : "initial",
             }}
             onClick={() => handleSeverityClick("Mild", "severity")}
@@ -111,7 +111,7 @@ const MainContentData = ({
                   entry.condition === selectedCondition &&
                   entry.severity === "Moderate"
               )
-                ? "red"
+                ? "orange"
                 : "initial",
             }}
             onClick={() => handleSeverityClick("Moderate", "severity")}

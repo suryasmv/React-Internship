@@ -10,6 +10,11 @@
   text-align: left; /* Align text to the left */
   transition: background-color 0.3s ease;
   width: 100%; /* Make the button take full width of the sidebar */
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Selected button styles */
@@ -19,4 +24,13 @@
 
 .sidebar-button:hover {
   background-color: #1abc9c; /* Lighter hover color */
+}
+
+.condition-icons {
+  height: 50px;
+}
+
+.condition-icons {
+  height: 50px;
+  filter: brightness(0) invert(1); /* Makes the image white */
 }

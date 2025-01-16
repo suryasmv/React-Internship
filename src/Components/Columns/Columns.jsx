@@ -115,6 +115,7 @@ const Columns = () => {
     Data.conditions.map((condition, index) => ({
       id: index + 1,
       title: condition.name,
+      icon: condition.icon,
     }))
   );
   const [gotoColumns, setGotoColumns] = useState(false);

@@ -19,7 +19,7 @@ import {
     SvgImage
 } from '../Libraries/Libraries';
 
-const Task = ({ id, title }) => {
+const Task = ({ id, title, icon }) => {
     const formattedTitle = title.replace(/_/g, ' ');
 
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
@@ -32,6 +32,7 @@ const Task = ({ id, title }) => {
         <div className='task'>
             <div ref={setNodeRef} {...attributes} {...listeners} style={style}>
                 {formattedTitle}
+                <img src={icon} />
             </div>
         </div>
     );
@@ -42,6 +43,7 @@ const Conditions = () => {
         Data.conditions.map((condition, index) => ({
             id: index + 1,
             title: condition.name,
+            icon: condition.icon,
         }))
     );
     const [gotoColumns, setGotoColumns] = useState(false);
@@ -106,7 +108,7 @@ const Conditions = () => {
                     <div className='column'>
                         <SortableContext items={preferences}>
                             {preferences.map((task) => (
-                                <Task id={task.id} title={task.title} key={task.id} />
+                                <Task id={task.id} title={task.title} key={task.id} icon={task.icon}/>
                             ))}
                         </SortableContext>
                     </div>

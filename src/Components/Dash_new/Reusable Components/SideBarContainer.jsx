@@ -11,18 +11,20 @@ const SideBarContainer = ({ visibleleft, setVisibleleft, sidebarprefer, handleSi
 
   return (
     <div className={`sidebar-container ${visibleleft ? 'visible' : ''}`}>
-      <div className="sidebar-content">
-        {sidebarprefer.map((preference, index) => (
-          <button
-            key={index}
-            className={`sidebar-button ${selectedPreference === preference.title ? 'selected' : ''}`}
-            onClick={() => handleClick(preference.title)}
-          >
-            {preference.title}
-          </button>
-        ))}
-      </div>
-    </div>
+  <div className="sidebar-content">
+    {sidebarprefer.map((preference, index) => (
+      <button
+        key={index}
+        className={`sidebar-button ${selectedPreference === preference.title ? 'selected' : ''}`}
+        onClick={() => handleClick(preference.title)}
+      >
+        <img src={preference.icon} className="condition-icons" alt={preference.title} />
+        {preference.title}
+      </button>
+    ))}
+  </div>
+</div>
+
   );
 };
 
