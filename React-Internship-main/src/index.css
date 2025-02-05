@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Modak&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto+Slab:wght@100..900&display=swap');
+
+html,body{
+  margin:0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: antiquewhite;
+  background: #eff3f8;
+}
+
+
+.card {
+  background: #ffffff;
+  padding: 1.2rem;
+  border-radius: 10px;
+  /* margin-bottom: 1rem; */
+}
+.Phenotype,.vcf,.report{
+  display:flex;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 2px;
+}
+.p-tabview-panels{
+  margin: 0;
+  padding: 0;
+}
+.p-datatable-table{
+  margin: 0;
+  padding: 0;
+}
+.card_table{
+  padding: 5px;
+}
+/* .p-dropdown{
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+} */
+
+.drop_list{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
