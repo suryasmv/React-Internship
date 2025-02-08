@@ -8,14 +8,22 @@ import { TbMoodConfuzed } from "react-icons/tb";
 import { TbMoodEmpty } from "react-icons/tb";
 import { TbMoodSad } from "react-icons/tb";
 import "./MainContentData.css";
-import fullScreenIcon from "../../Dash_new/fullscreen.svg";
-import exitFullScreenIcon from "../../Dash_new/fullscreen-exit.svg";
+import fullScreenIcon from "../fullscreen.svg";
+import exitFullScreenIcon from "../fullscreen-exit.svg";
+import FullScreenView from "./FullScreenExcel";
+import AIscore from "./AIscore";
 
 const MainContentData = ({
   selectedCondition,
   submittedData,
+  setSubmittedData,
   handleSeverityClick,
   RenderTabViewContent,
+  selectedPatient,
+  aiScore,
+  reason,
+  setReason,
+  setAiScore,
 }) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
 
@@ -34,207 +42,31 @@ const MainContentData = ({
               {selectedCondition ? selectedCondition.replace(/_/g, " ") : " "}
             </h1>
 
-            <div
-              className="fullscreen"
-              onClick={toggleFullScreen}
-              style={{ cursor: "pointer" }}
-            >
-              <img
-                src={isFullScreen ? exitFullScreenIcon : fullScreenIcon}
-                alt={isFullScreen ? "Exit Fullscreen" : "Enter Fullscreen"}
-                className="fullicon"
-                style={{ width: "40px", height: "40px" }}
-              />
-              {isFullScreen && (
-                <div
-                  style={{
-                    position: "fixed",
-                    top: "1%",
-                    left: "1%",
-                    width: "100%",
-                    height: "100%",
-                    backgroundColor: "#f9f9f9",
-                    borderRadius: "16px",
-                    boxShadow: "0px 6px 20px rgba(0, 0, 0, 0.3)",
-                    padding: "3px",
-                    zIndex: 1000,
-                    overflowY: "auto",
-                  }}
-                >
-                  <button
-                    onClick={toggleFullScreen}
-                    style={{
-                      position: "absolute",
-                      top: "15px",
-                      right: "15px",
-                      padding: "5px 5px",
-                      border: "none",
-                      borderRadius: "8px",
-                      backgroundColor: "red",
-                      color: "white",
-                      fontSize: "0.8rem",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Close
-                  </button>
+            <AIscore
+              selectedPatient={selectedPatient}
+              selectedConditon={selectedCondition}
+              severity={
+                submittedData.find(
+                  (entry) => entry.condition === selectedCondition
+                )?.severity || ""
+              }
+              handleSeverityClick={handleSeverityClick}
+              aiScore={aiScore}
+              setAiScore={setAiScore}
+              reason={reason}
+              setReason={setReason}
+            />
 
-                  {/* Severity and Concern Buttons in a single line */}
-                  <div
-                    className="severity-buttons"
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-evenly",
-                      
-                      flexWrap: "wrap", // Ensures the buttons wrap to the next line if needed
-                    }}
-                  >
-                    {["Low", "Mild", "Moderate", "Moderate to High"].map(
-                      (severity, idx) => {
-                        const colors = {
-                          Low: "green",
-                          Mild: "#FFD700",
-                          Moderate: "orange",
-                          "Moderate to High": "red",
-                        };
-                        const icons = {
-                          Low: <MdOutlineMood />,
-                          Mild: <TbMoodConfuzed />,
-                          Moderate: <TbMoodEmpty />,
-                          "Moderate to High": <TbMoodSad />,
-                        };
-                        return (
-                          <Button
-                            key={idx}
-                            style={{
-                              fontSize: "10px", // Reduced size
-                              padding: "0.4rem 0.8rem", // Adjusted padding for compactness
-                              borderRadius: "12px",
-                              backgroundColor: submittedData.find(
-                                (entry) =>
-                                  entry.condition === selectedCondition &&
-                                  entry.severity === severity
-                              )
-                                ? colors[severity]
-                                : "initial",
-                              color: "black",
-                              
-                              display: "flex",
-                              flexDirection: "column",
-                              alignItems: "center",
-                              gap: "5px",
-                              minWidth: "5px", // Ensure buttons are evenly sized
-                              maxWidth: "120px", // Limit the width
-                              justifyContent: "center",
-                            }}
-                            onClick={() =>
-                              handleSeverityClick(severity, "severity")
-                            }
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.backgroundColor =
-                                colors[severity];
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.backgroundColor =
-                                submittedData.find(
-                                  (entry) =>
-                                    entry.condition === selectedCondition &&
-                                    entry.severity === severity
-                                )
-                                  ? colors[severity]
-                                  : "initial";
-                            }}
-                          >
-                            {icons[severity]}
-                            <p style={{ margin: 0 }}>{severity}</p>
-                          </Button>
-                        );
-                      }
-                    )}
-
-                    {/* Concern Button */}
-                    <Button
-                      style={{
-                        fontSize: "0.8rem",
-                        padding: "0.4rem 0.6rem",
-                        color: "black",
-                        backgroundColor: submittedData.find(
-                          (entry) =>
-                            entry.condition === selectedCondition &&
-                            entry.Concern === "Yes"
-                        )
-                          ? "red"
-                          : "initial",
-                        minWidth: "100px",
-                      }}
-                      onClick={() => handleSeverityClick(null, "Concern")}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.querySelector("p").style.color = "red";
-                        e.currentTarget.querySelector("svg").style.color =
-                          "red";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.querySelector("p").style.color =
-                          "initial";
-                        e.currentTarget.querySelector("svg").style.color =
-                          "initial";
-                      }}
-                    >
-                      <p style={{ margin: 0 }}>Concern</p>
-                      <MdLocalHospital />
-                    </Button>
-
-                    {/* No Mutation Button */}
-                    <Button
-                      style={{
-                        fontSize: "0.8rem",
-                        padding: "0.4rem 0.6rem",
-                        color: "black",
-                        backgroundColor: submittedData.find(
-                          (entry) =>
-                            entry.condition === selectedCondition &&
-                            entry.NoMutation === "Yes"
-                        )
-                          ? "red"
-                          : "initial",
-                        minWidth: "100px",
-                      }}
-                      onClick={() => handleSeverityClick(null, "NoMutation")}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.querySelector("p").style.color = "red";
-                        e.currentTarget.querySelector("svg").style.color =
-                          "red";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.querySelector("p").style.color =
-                          "initial";
-                        e.currentTarget.querySelector("svg").style.color =
-                          "initial";
-                      }}
-                    >
-                      <p style={{ margin: 0 }}>No Mutation</p>
-                      <TbDna2Off />
-                    </Button>
-                  </div>
-
-                  {/* Render Tab View Content */}
-                  <div
-                    style={{
-                      maxHeight: "70%",
-                      overflowY: "auto",
-                      fontSize: "5rem",
-                      padding: "0rem",
-                      lineHeight: "1.8",
-                      backgroundColor: "red",
-                      borderRadius: "12px",
-                      boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-                    }}
-                  >
-                    {RenderTabViewContent(selectedCondition)}
-                  </div>
-                </div>
-              )}
-            </div>
+            <FullScreenView
+              isFullScreen={isFullScreen}
+              toggleFullScreen={toggleFullScreen}
+              submittedData={submittedData}
+              selectedCondition={selectedCondition}
+              handleSeverityClick={handleSeverityClick}
+              RenderTabViewContent={RenderTabViewContent}
+              aiScore={aiScore}
+              reason={reason}
+            />
           </div>
 
           {/* Concern and No Mutation Buttons */}
@@ -247,7 +79,7 @@ const MainContentData = ({
                 backgroundColor: submittedData.find(
                   (entry) =>
                     entry.condition === selectedCondition &&
-                    entry.Concern === "Yes"
+                    entry.Concern === "Y"
                 )
                   ? "red"
                   : "initial",
@@ -275,7 +107,7 @@ const MainContentData = ({
                 backgroundColor: submittedData.find(
                   (entry) =>
                     entry.condition === selectedCondition &&
-                    entry.NoMutation === "Yes"
+                    entry.NoMutation === "Y"
                 )
                   ? "red"
                   : "initial",

@@ -295,6 +295,14 @@ button {
   border: 1px solid #ddd;
 }
 
+.doctor-datatable th {
+  position: sticky;
+  top: 0;
+  background-color: white; /* Ensure visibility */
+  z-index: 10; /* Keep headers above content */
+}
+
+
 .doctor-datatable .p-datatable-tbody > tr {
   border-bottom: 1px solid #ddd;
 }

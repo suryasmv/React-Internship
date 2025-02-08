@@ -20,7 +20,7 @@ const ReportHandleButton = ({
       <Dialog
         header="Submitted Data"
         visible={visibleData}
-        style={{ width: "50vw" }}
+        style={{ width: "60vw" }}
         onHide={() => setVisibleData(false)}
       >
         <div className="popup-content">
@@ -53,6 +53,12 @@ const ReportHandleButton = ({
                       No Mutation
                     </th>
                     <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                      AI Score
+                    </th>
+                    <th style={{ border: "1px solid #ddd", padding: "8px" }}>
+                      Reason
+                    </th>
+                    <th style={{ border: "1px solid #ddd", padding: "8px" }}>
                       Actions
                     </th>
                   </tr>
@@ -67,10 +73,16 @@ const ReportHandleButton = ({
                         {entry.severity}
                       </td>
                       <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                        {entry.Concern}
+                        {entry.Concern || ""}
                       </td>
                       <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                        {entry.NoMutation}
+                        {entry.NoMutation || ""}
+                      </td>
+                      <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                        {entry.aiScore || "N/A"}
+                      </td>
+                      <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                        {entry.reason || "N/A"}
                       </td>
                       <td
                         style={{

@@ -71,6 +71,8 @@ const Dashboard = () => {
   const [hovered, setHovered] = useState(false);
   const [selectedCondition, setSelectedCondition] = useState(null);
   const [isPhenotypeVisible, setPhenotypeVisible] = useState(true);
+  const [aiScore, setAiScore] = useState();
+  const [reason, setReason] = useState();
 
   useEffect(() => {
     const storedColumns = localStorage.getItem("selectedColumns");
@@ -133,7 +135,7 @@ const Dashboard = () => {
   ];
   const concerns = [{ name: "yes", code: "CN" }];
 
-  const handleSeverityClick = (level, property) => {
+  const handleSeverityClick = (level, property, value = "Y") => {
     if (!selectedCondition) {
       alert("Please select a condition first!");
       return;
@@ -144,29 +146,31 @@ const Dashboard = () => {
     );
 
     if (existingIndex !== -1) {
-      // Update the existing condition
+      // Update existing condition
       const updatedData = [...submittedData];
       if (property === "severity") {
         updatedData[existingIndex].severity = level;
       } else {
         updatedData[existingIndex][property] =
-          updatedData[existingIndex][property] === "Yes" ? "" : "Yes";
+          updatedData[existingIndex][property] === value ? "" : value;
       }
       setSubmittedData(updatedData);
     } else {
-      // Add new condition with severity or property
+      // Add new condition with severity or additional properties
       const newEntry = {
         condition: selectedCondition,
         severity: property === "severity" ? level : null,
-        Concern: property === "Concern" ? "Yes" : "",
-        NoMutation: property === "NoMutation" ? "Yes" : "",
+        Concern: property === "Concern" ? "Y" : "",
+        NoMutation: property === "NoMutation" ? "Y" : "",
+        AIscore: property === "aiScore" ? value : "",
+        Reason: property === "reason" ? value : "",
       };
       setSubmittedData([...submittedData, newEntry]);
     }
 
-    console.log(`
-      Updated ${property} for ${selectedCondition}: ${level || "Yes"}
-    `);
+    console.log(
+      `Updated ${property} for ${selectedCondition}: ${level || value}`
+    );
   };
 
   const [severity, setSeverity] = useState(null); // Holds selected severity
@@ -215,7 +219,6 @@ const Dashboard = () => {
   };
 
   const handleDownload = () => {
-    // Define headers with specific severity levels as columns
     const headers = [
       [
         "Condition",
@@ -225,26 +228,27 @@ const Dashboard = () => {
         "Moderate to High",
         "Concern",
         "No Mutation",
+        "AI Score",
+        "Reason",
       ],
     ];
 
-    // Map submitted data to match the new column structure
     const data = submittedData.map((entry) => [
-      entry.condition, // Condition
-      entry.severity === "Low" ? "Yes" : "", // Low column
-      entry.severity === "Mild" ? "Yes" : "", // Mild column
-      entry.severity === "Moderate" ? "Yes" : "", // Moderate column
-      entry.severity === "Moderate to High" ? "Yes" : "", // Moderate to High column
-      entry.Concern || "", // Concern column
-      entry.NoMutation || "", // No Mutation column
+      entry.condition,
+      entry.severity === "Low" ? "Y" : "",
+      entry.severity === "Mild" ? "Y" : "",
+      entry.severity === "Moderate" ? "Y" : "",
+      entry.severity === "Moderate to High" ? "Y" : "",
+      entry.Concern || "",
+      entry.NoMutation || "",
+      entry.aiScore || "",
+      entry.reason || "",
     ]);
 
-    // Create worksheet and workbook
     const worksheet = XLSX.utils.aoa_to_sheet([...headers, ...data]);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Submitted Data");
 
-    // Write workbook to a file
     XLSX.writeFile(workbook, "submitted_data.xlsx");
   };
 
@@ -593,8 +597,8 @@ const Dashboard = () => {
       <div className="loading-container">
         <div className="loader"></div>
       </div>
-    );
-  }
+    );
+  }
 
   const RenderTabViewContent = () => {
     let renderPatient = `${selectedPatient}.xlsx`;
@@ -643,7 +647,9 @@ const Dashboard = () => {
               <TabPanel
                 key={index}
                 header={
-                  <span style={{ fontSize: "14px" }}>{subcategory.name}</span>
+                  <span style={{ fontSize: "14px", position: "sticky" }}>
+                    {subcategory.name}
+                  </span>
                 }
               >
                 {subcategory.subtype ? (
@@ -662,7 +668,6 @@ const Dashboard = () => {
                           <div className="datatable-container">
                             <DataTable
                               value={patientData?.conditions?.filter((item) => {
-                                console.log("Filtering Item:", item);
                                 return (
                                   item.Headings === subcategory.name &&
                                   item.Condition === subtype.name &&
@@ -672,10 +677,14 @@ const Dashboard = () => {
                               reorderableColumns
                               resizableColumns
                               className="doctor-datatable"
+                              scrollable
+                              scrollHeight="400px" // Enables vertical scrolling
                               sortMode="multiple"
                               globalFilterFields={selectedColumns}
                               style={{
-                                fontSize: "14px", // Reduce font size of data
+                                fontSize: "14px",
+                                maxHeight: "500px", // Ensures table height is limited
+                                overflow: "auto",
                               }}
                             >
                               {selectedColumns.map((columnName, index) => (
@@ -688,7 +697,8 @@ const Dashboard = () => {
                                       style={{
                                         whiteSpace: "normal",
                                         textAlign: "center",
-                                        fontSize: "12px", // Reduced font size for header
+                                        fontSize: "12px",
+                                        fontWeight: "bold",
                                       }}
                                     >
                                       {columnName.split(" ").map((part, i) => (
@@ -718,7 +728,7 @@ const Dashboard = () => {
                                         style={{
                                           whiteSpace: "normal",
                                           textAlign: "left",
-                                          fontSize: "14px", // Reduce the font size for the data
+                                          fontSize: "14px",
                                         }}
                                       >
                                         {content}
@@ -907,8 +917,14 @@ const Dashboard = () => {
                   selectedCondition={selectedCondition}
                   isPhenotypeVisible={isPhenotypeVisible}
                   submittedData={submittedData}
+                  setSubmittedData={setSubmittedData}
                   handleSeverityClick={handleSeverityClick}
                   RenderTabViewContent={RenderTabViewContent}
+                  selectedPatient={selectedPatient}
+                  aiScore={aiScore}
+                  reason={reason}
+                  setAiScore={setAiScore}
+                  setReason={setReason}
                 />
               </div>
 
