@@ -736,7 +736,7 @@ const Dashboard = () => {
                                     );
                                   }}
                                   style={{
-                                    minWidth: "150px",
+                                    minWidth: "50px",
                                     textAlign: "center",
                                   }}
                                 />

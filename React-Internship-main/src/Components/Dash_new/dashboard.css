@@ -313,7 +313,7 @@ button {
 
 .doctor-datatable .p-datatable-tbody > tr > td {
   text-align: center;
-  padding: 4px 8px;
+  padding: 1px 8px;
   font-size: 0.9rem;
   border: 1px solid #ddd;
 }

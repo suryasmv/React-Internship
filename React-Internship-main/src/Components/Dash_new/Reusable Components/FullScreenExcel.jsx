@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "primereact/button";
 import { MdOutlineMood, MdLocalHospital } from "react-icons/md";
 import { TbMoodConfuzed, TbMoodEmpty, TbMoodSad, TbDna2Off } from "react-icons/tb";
@@ -8,21 +8,10 @@ import exitFullScreenIcon from "../fullscreen-exit.svg";
 const FullScreenView = ({
   isFullScreen,
   toggleFullScreen,
-  submittedData,
-  selectedCondition,
   handleSeverityClick,
+  selectedCondition,
   RenderTabViewContent,
 }) => {
-  const [zoomLevel, setZoomLevel] = useState(1);
-
-  const handleZoomIn = () => {
-    setZoomLevel((prevZoom) => Math.min(prevZoom + 0.1, 2));
-  };
-
-  const handleZoomOut = () => {
-    setZoomLevel((prevZoom) => Math.max(prevZoom - 0.1, 0.5));
-  };
-
   return (
     <div className="fullscreen" onClick={toggleFullScreen} style={{ cursor: "pointer" }}>
       <img
@@ -69,12 +58,6 @@ const FullScreenView = ({
             Close
           </button>
 
-          {/* Zoom Controls */}
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: "10px" }}>
-            <Button label="Zoom In" onClick={handleZoomIn} style={{ marginRight: "10px" }} />
-            <Button label="Zoom Out" onClick={handleZoomOut} />
-          </div>
-
           {/* Severity and Concern Buttons */}
           <div
             className="severity-buttons"
@@ -85,43 +68,55 @@ const FullScreenView = ({
               marginBottom: "10px",
             }}
           >
-            {['Low', 'Mild', 'Moderate', 'Moderate to High'].map((severity, idx) => {
-              const colors = { Low: "green", Mild: "#FFD700", Moderate: "orange", "Moderate to High": "red" };
-              const icons = { Low: <MdOutlineMood />, Mild: <TbMoodConfuzed />, Moderate: <TbMoodEmpty />, "Moderate to High": <TbMoodSad /> };
+            {["Low", "Mild", "Moderate", "Moderate to High"].map((severity, idx) => {
+              const colors = {
+                Low: "green",
+                Mild: "#FFD700",
+                Moderate: "orange",
+                "Moderate to High": "red",
+              };
+              const icons = {
+                Low: <MdOutlineMood />,
+                Mild: <TbMoodConfuzed />,
+                Moderate: <TbMoodEmpty />,
+                "Moderate to High": <TbMoodSad />,
+              };
               return (
                 <Button
                   key={idx}
                   style={{ backgroundColor: colors[severity], minWidth: "120px" }}
-                  onClick={() => handleSeverityClick(severity, "severity")}
+                  onClick={() => {
+                    handleSeverityClick(severity, "severity");
+                    toggleFullScreen();
+                  }}
                 >
                   {icons[severity]} {severity}
                 </Button>
               );
             })}
-            <Button style={{ backgroundColor: "red", minWidth: "100px" }} onClick={() => handleSeverityClick(null, "Concern")}>
+            <Button
+              style={{ backgroundColor: "red", minWidth: "100px" }}
+              onClick={() => {
+                handleSeverityClick(null, "Concern");
+                toggleFullScreen();
+              }}
+            >
               <MdLocalHospital /> Concern
             </Button>
-            <Button style={{ backgroundColor: "red", minWidth: "100px" }} onClick={() => handleSeverityClick(null, "NoMutation")}>
+            <Button
+              style={{ backgroundColor: "red", minWidth: "100px" }}
+              onClick={() => {
+                handleSeverityClick(null, "NoMutation");
+                toggleFullScreen();
+              }}
+            >
               <TbDna2Off /> No Mutation
             </Button>
           </div>
 
           {/* Table Content */}
-          <div
-            style={{
-              width: "95%", // Fixed width to ensure it doesn't expand
-              overflowX: "auto",
-            }}
-          >
-            <div
-              style={{
-                fontSize: `${zoomLevel}rem`, // Adjust font size dynamically
-                padding: `${zoomLevel * 5}px`, // Adjust padding
-                transition: "all 0.2s ease-in-out",
-              }}
-            >
-              {RenderTabViewContent(selectedCondition)}
-            </div>
+          <div style={{ width: "97%", overflowX: "auto" }}>
+            <div>{RenderTabViewContent(selectedCondition)}</div>
           </div>
         </div>
       )}
