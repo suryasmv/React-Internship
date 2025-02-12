@@ -62,6 +62,7 @@ const Task = ({ id, title }) => {
     </div>
   );
 };
+
 const Dashboard = () => {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [selectedColumns, setSelectedColumns] = useState([]);
@@ -73,6 +74,8 @@ const Dashboard = () => {
   const [isPhenotypeVisible, setPhenotypeVisible] = useState(true);
   const [aiScore, setAiScore] = useState();
   const [reason, setReason] = useState();
+  const [submittedConditions, setSubmittedConditions] = useState([]); // Track submitted conditions
+  const [removedCondition, setRemovedCondition] = useState(null);
 
   useEffect(() => {
     const storedColumns = localStorage.getItem("selectedColumns");
@@ -102,6 +105,7 @@ const Dashboard = () => {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
   const getTaskPos = (id) => preferences.findIndex((task) => task.id === id);
 
   const handleDragEnd = (e) => {
@@ -121,6 +125,7 @@ const Dashboard = () => {
   };
 
   const pref = preferences;
+
   const values = [
     { name: "Low", code: "L" },
     { name: "Low to Mild", code: "LM" },
@@ -166,6 +171,10 @@ const Dashboard = () => {
         Reason: property === "reason" ? value : "",
       };
       setSubmittedData([...submittedData, newEntry]);
+    }
+
+    if (!submittedConditions.includes(selectedCondition)) {
+      setSubmittedConditions([...submittedConditions, selectedCondition]);
     }
 
     console.log(
@@ -214,8 +223,12 @@ const Dashboard = () => {
   // Function to remove a specific entry
   const handleRemove = (index) => {
     const updatedData = [...submittedData];
-    updatedData.splice(index, 1);
+    const removed = updatedData.splice(index, 1)[0];
     setSubmittedData(updatedData);
+    setRemovedCondition(removed.condition); // Set the removed condition
+    setSubmittedConditions((prevConditions) =>
+      prevConditions.filter((condition) => condition !== removed.condition)
+    ); // Update submittedConditions state
   };
 
   const handleDownload = () => {
@@ -251,307 +264,6 @@ const Dashboard = () => {
 
     XLSX.writeFile(workbook, "submitted_data.xlsx");
   };
-
-  // const RenderReportContent = ({ pref, values }) => {
-  //   // const initialState = () => {
-  //   //     const storedData = reportconditions.reportconditions[0];
-  //   //     console.log("store", storedData);
-  //   //     return storedData.map(condition => ({
-  //   //         name: condition.name,
-  //   //         selectedOption: null,
-  //   //         concern: null
-  //   //     }));
-  //   // };
-  //   const [conditionNames, setConditionNames] = useState([]);
-  //   // useEffect(() => {
-  //   //     localStorage.setItem('permanent_pref', JSON.stringify(conditionNames));
-  //   // }, [conditionNames]);
-  //   // console.log(conditionNames)
-  //   useEffect(() => {
-  //     // Parse the JSON data
-  //     const conditionsData = [
-  //       {
-  //         reportconditions: [
-  //           [
-  //             {
-  //               name: "Diabetes",
-  //             },
-  //             {
-  //               name: "High Blood pressure",
-  //             },
-  //             {
-  //               name: "Coronary Artery Disease",
-  //             },
-  //             {
-  //               name: "Arrhythmia",
-  //             },
-  //             {
-  //               name: "Heart Failure- Dilated Cardiomyopathy, Restrictive Cardiomyopathy",
-  //             },
-  //             {
-  //               name: "Cholesterol disorders",
-  //             },
-  //             {
-  //               name: "Hypertriglyceridemia",
-  //             },
-  //             {
-  //               name: "Thyroid Disorders- Hypothyroidism, Hyperthyroidism",
-  //             },
-  //             {
-  //               name: "Anemia- Microcytic, Hemolytic",
-  //             },
-  //             {
-  //               name: "Predisposition to Blood clots- Thrombophilia",
-  //             },
-  //             {
-  //               name: "Bleeding Disorders",
-  //             },
-  //             {
-  //               name: "Parkinson’s Disease",
-  //             },
-  //             {
-  //               name: "Alzheimer’s Disease",
-  //             },
-  //             {
-  //               name: "Migraines, Headaches",
-  //             },
-  //             {
-  //               name: "Seizures",
-  //             },
-  //             {
-  //               name: "Inflammatory bowel disease- Crohn’s, Ulcerative colitis",
-  //             },
-  //             {
-  //               name: "Respiratory Allergies",
-  //             },
-  //             {
-  //               name: "Food Allergies",
-  //             },
-  //             {
-  //               name: "Liver Disorders",
-  //             },
-  //             {
-  //               name: "Gall bladder disorders",
-  //             },
-  //             {
-  //               name: "Pancreatic Disorders",
-  //             },
-  //             {
-  //               name: "Nephrotic Syndrome (Focal Segmental Glomerulosclerosis, Membranous nephropathy, Minimal Change Disease)",
-  //             },
-  //             {
-  //               name: "Interstitial Nephritis, Tubulo interstitial Disease",
-  //             },
-  //             {
-  //               name: "Renal Stones- Calcium Oxalate stones, Cystine stones, Uric Acid Stones",
-  //             },
-  //             {
-  //               name: "Dry skin, eczema",
-  //             },
-  //             {
-  //               name: "Skin Allergies",
-  //             },
-  //             {
-  //               name: "Vitiligo",
-  //             },
-  //             {
-  //               name: "Osteoporosis",
-  //             },
-  //             {
-  //               name: "Degenerative Joint Disease, Cartilage degeneration",
-  //             },
-  //             {
-  //               name: "Muscular dystrophy, atrophy",
-  //             },
-  //             {
-  //               name: "Fatigue",
-  //             },
-  //             {
-  //               name: "Mood Disorders- Anxiety, Schizophrenia, Depression",
-  //             },
-  //             {
-  //               name: "Urticaria",
-  //             },
-  //             {
-  //               name: "Essential tremors",
-  //             },
-  //             {
-  //               name: "Renal Disorders",
-  //             },
-  //             {
-  //               name: "Sinusitis, Dust Allergy (Ciliary dykinesia, Hyper IgE syndrome, Angioedma, Chroinc granulomatous)",
-  //             },
-  //             {
-  //               name: "Obesity",
-  //             },
-  //             {
-  //               name: "Skin Health",
-  //             },
-  //             {
-  //               name: "Eye Health",
-  //             },
-  //             {
-  //               name: "Gastritis",
-  //             },
-  //             {
-  //               name: "Fatigue 9. 28. 29.30 which to consider",
-  //             },
-  //             {
-  //               name: "Food Which other disease to consider",
-  //             },
-  //           ],
-  //         ],
-  //       },
-  //     ];
-  //     const conditions = conditionsData[0].reportconditions[0];
-  //     // Initialize each condition with selectedOption and concern properties
-  //     const conditionNames = conditions.map((condition) => ({
-  //       name: condition.name,
-  //       selectedOption: null,
-  //       concern: null,
-  //     }));
-  //     setConditionNames(conditionNames);
-  //   }, []);
-
-  //   const handleOptionChange = (rowData, newValue) => {
-  //     const updatedConditions = conditionNames.map((condition) => {
-  //       if (condition.name === rowData.name) {
-  //         return { ...condition, selectedOption: newValue };
-  //       }
-  //       return condition;
-  //     });
-  //     setConditionNames(updatedConditions);
-  //   };
-  //   const handleConcernChange = (rowData, newValue) => {
-  //     const updatedConditions = conditionNames.map((condition) => {
-  //       if (condition.name === rowData.name) {
-  //         return { ...condition, concern: newValue };
-  //       }
-  //       return condition;
-  //     });
-  //     setConditionNames(updatedConditions);
-  //   };
-
-  //   const handleClearRow = (rowData) => {
-  //     const updatedConditions = conditionNames.map((condition) => {
-  //       if (condition.name === rowData.name) {
-  //         return { ...condition, selectedOption: null, concern: null };
-  //       }
-  //       return condition;
-  //     });
-  //     setConditionNames(updatedConditions);
-  //     localStorage.setItem("permanent_pref", JSON.stringify(updatedConditions));
-  //   };
-  //   const exportToExcel = () => {
-  //     const formattedData = conditionNames.reduce((acc, condition) => {
-  //       const rowData = {
-  //         "Medical Condition": condition.name,
-  //         Low:
-  //           condition.selectedOption && condition.selectedOption.code === "L"
-  //             ? "y"
-  //             : "",
-  //         "Low to Mild":
-  //           condition.selectedOption && condition.selectedOption.code === "LM"
-  //             ? "y"
-  //             : "",
-  //         Mild:
-  //           condition.selectedOption && condition.selectedOption.code === "MIL"
-  //             ? "y"
-  //             : "",
-  //         "Mild to Moderate":
-  //           condition.selectedOption && condition.selectedOption.code === "MM"
-  //             ? "y"
-  //             : "",
-  //         Moderate:
-  //           condition.selectedOption && condition.selectedOption.code === "MOD"
-  //             ? "y"
-  //             : "",
-  //         "Moderate to High":
-  //           condition.selectedOption && condition.selectedOption.code === "MOH"
-  //             ? "y"
-  //             : "",
-  //         High:
-  //           condition.selectedOption && condition.selectedOption.code === "H"
-  //             ? "y"
-  //             : "",
-  //         "No Mutations":
-  //           condition.selectedOption && condition.selectedOption.code === "NM"
-  //             ? "y"
-  //             : "",
-  //         concerns:
-  //           condition.concern && condition.concern.code === "CN" ? "y" : "",
-  //         "Food Which other disease to consider":
-  //           condition.selectedOption && condition.selectedOption.code === "FWC"
-  //             ? "y"
-  //             : "",
-  //         "Fatigue 9. 28. 29.30 which to consider":
-  //           condition.selectedOption && condition.selectedOption.code === "FTC"
-  //             ? "y"
-  //             : "",
-  //       };
-  //       acc.push(rowData);
-  //       return acc;
-  //     }, []);
-
-  //     const worksheet = XLSX.utils.json_to_sheet(formattedData);
-  //     const workbook = XLSX.utils.book_new();
-  //     XLSX.utils.book_append_sheet(
-  //       workbook,
-  //       worksheet,
-  //       "Medical Conditions Data"
-  //     );
-  //     XLSX.writeFile(workbook, "medical_conditions_data.xlsx");
-  //   };
-  //   return (
-  //     <div className="table">
-  //       <div className="download">
-  //         <Button onClick={exportToExcel} label="Download" />
-  //       </div>
-  //       <DataTable
-  //         value={conditionNames}
-  //         scrollable={false}
-  //         scrollHeight="100%"
-  //         showGridlines
-  //       >
-  //         <Column field="name" header="Condition Name" />
-  //         <Column
-  //           header="Options"
-  //           body={(rowData) => (
-  //             <Dropdown
-  //               value={rowData.selectedOption}
-  //               options={values}
-  //               onChange={(e) => handleOptionChange(rowData, e.value)}
-  //               optionLabel="name"
-  //               placeholder="Select Option"
-  //             />
-  //           )}
-  //         />
-  //         <Column
-  //           header="Concerns"
-  //           body={(rowData) => (
-  //             <Dropdown
-  //               value={rowData.concern}
-  //               options={concerns}
-  //               onChange={(e) => handleConcernChange(rowData, e.value)}
-  //               optionLabel="name"
-  //               placeholder="Select Option"
-  //             />
-  //           )}
-  //         />
-  //         <Column
-  //           header="Clear"
-  //           body={(rowData) => (
-  //             <Button
-  //               icon="pi pi-times"
-  //               onClick={() => handleClearRow(rowData)}
-  //               className="p-button-rounded p-button-danger"
-  //             />
-  //           )}
-  //         />
-  //       </DataTable>
-  //     </div>
-  //   );
-  // };
 
   // Function to fetch data from both APIs
   const fetchDataFromAPIs = async () => {
@@ -907,6 +619,8 @@ const Dashboard = () => {
                     setVisibleleft={setVisibleleft}
                     sidebarprefer={sidebarprefer}
                     handleSingleCodnition={handleSingleCodnition}
+                    submittedConditions={submittedConditions} // Pass submitted conditions
+                    removedCondition={removedCondition} // Pass removed condition
                   />
                 </div>
               )}

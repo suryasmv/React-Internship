@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Modak&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto+Slab:wght@100..900&family=Cinzel:wght@400..900&family=Marcellus&family=Rakkas&family=Dancing+Script:wght@400..700&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 .form_page{
-  background: url('./stethoscope-doctor-s-desk_23-2147652338.jpg');
   background-position: bottom;
   background-size: cover;
   height: 100vh;

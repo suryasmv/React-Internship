@@ -24,6 +24,10 @@
   background-color: #1abc9c; /* Background color for selected button */
 }
 
+.sidebar-button.submitted {
+  background-color: #28a745; /* Green background for submitted conditions */
+}
+
 .sidebar-button:hover {
   background-color: #1abc9c; /* Lighter hover color */
 }

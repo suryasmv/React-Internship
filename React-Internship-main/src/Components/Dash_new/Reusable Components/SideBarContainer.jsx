@@ -6,6 +6,7 @@ const SideBarContainer = ({
   setVisibleleft,
   sidebarprefer,
   handleSingleCodnition,
+  submittedConditions, // Accept submitted conditions as a prop
 }) => {
   const [selectedPreference, setSelectedPreference] = useState(null); // State for selected preference
 
@@ -30,7 +31,9 @@ const SideBarContainer = ({
             key={index}
             className={`sidebar-button ${
               selectedPreference === preference.title ? "selected" : ""
-            }`}
+            } ${
+              submittedConditions.includes(preference.title) ? "submitted" : ""
+            }`} // Add 'submitted' class if condition is in submittedConditions
             onClick={() => handleClick(preference.title)}
           >
             <img
