@@ -36,6 +36,7 @@ const Options = {
     "Consequence",
     "Conseq score",
     "clin sig",
+    "IMPACT",
   ],
   "Population Frequencies": [
     "AFR_AF",
