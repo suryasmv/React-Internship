@@ -185,7 +185,7 @@ const FullScreenView = ({
           </div>
 
           {/* Table Content */}
-          <div style={{ width: "97%", overflowX: "auto" }}>
+          <div style={{ width: "97%", overflowX: "auto", scrollHeight:"700px"}}>
             <div>{RenderTabViewContent(selectedCondition)}</div>
           </div>
         </div>

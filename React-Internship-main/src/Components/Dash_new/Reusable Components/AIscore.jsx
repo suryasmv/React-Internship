@@ -36,10 +36,18 @@ const AIscore = ({
     }
   }, [selectedPatient]);
 
+  useEffect(() => {
+    if (patientData) {
+      const aiScoreValue = patientData[selectedConditon];
+      setAiScore(aiScoreValue);
+      if (severity === aiScoreValue) {
+        setReason("");
+      }
+    }
+  }, [patientData, selectedConditon, severity, setAiScore, setReason]);
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
-
-  setAiScore(patientData ? patientData[selectedConditon] : null);
 
   const severityMismatch = severity && aiScore && severity !== aiScore;
 

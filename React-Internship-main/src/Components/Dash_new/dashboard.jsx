@@ -155,6 +155,8 @@ const Dashboard = () => {
       const updatedData = [...submittedData];
       if (property === "severity") {
         updatedData[existingIndex].severity = level;
+        updatedData[existingIndex].aiScore = aiScore;
+        updatedData[existingIndex].reason = "";
       } else {
         updatedData[existingIndex][property] =
           updatedData[existingIndex][property] === value ? "" : value;
@@ -350,6 +352,29 @@ const Dashboard = () => {
       return <div>No condition data available for the selected condition.</div>;
     }
 
+    const getCellStyle = (columnName, value) => {
+      switch (columnName) {
+        case "Zygosity":
+          return value === "Homozygous Variant"
+            ? { backgroundColor: "orange" }
+            : {};
+        case "clin sig":
+          return value === "Uncertain Significance"
+            ? { backgroundColor: "yellow" }
+            : {};
+        case "IMPACT":
+          return value === "HIGH" ? { backgroundColor: "red" } : {};
+        case "Lit":
+          return value === "Yes"
+            ? { backgroundColor: "green", color:"white" }
+            : value === "No"
+            ? { backgroundColor: "violet" }
+            : {};
+        default:
+          return {};
+      }
+    };
+
     return (
       <div>
         <TabView scrollable>
@@ -441,6 +466,10 @@ const Dashboard = () => {
                                           whiteSpace: "normal",
                                           textAlign: "left",
                                           fontSize: "14px",
+                                          ...getCellStyle(
+                                            columnName,
+                                            rowData[columnName]
+                                          ),
                                         }}
                                       >
                                         {content}

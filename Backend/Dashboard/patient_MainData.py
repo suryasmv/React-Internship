@@ -47,7 +47,7 @@ def extract_patient_data2(file_paths):
                         "Condition": sheet_name if special_condition else (row.get("Condition", None) if pd.notna(row.get("Condition", None)) else "NaN"),
                         "Headings": sheet_name if special_condition else (row.get("Headings", None) if pd.notna(row.get("Headings", None)) else "NaN"),
                         "subtype_cond": sheet_name,
-                        "Gene Name": gene_name,  # Use the determined Gene Name
+                        "Gene Name": row.get("Gene", None) if pd.notna(row.get("Gene", None)) else "NaN",
                         "Gene": row.get("Gene", None) if pd.notna(row.get("Gene", None)) else "NaN",
                         "Gene Score": row.get("Gene Score", None) if pd.notna(row.get("Gene Score", None)) else "NaN",
                         "rsID": row.get("rsID", None) if pd.notna(row.get("rsID", None)) else "NaN",

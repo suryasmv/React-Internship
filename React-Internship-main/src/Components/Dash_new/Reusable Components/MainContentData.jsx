@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "primereact/button";
 import Phenotype from "../../Phenotype/Phenotype"; // Assuming Phenotype component is in a separate file
 import { MdLocalHospital } from "react-icons/md";
@@ -26,9 +26,29 @@ const MainContentData = ({
   setAiScore,
 }) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [patientConditionData, setPatientConditionData] = useState({});
+
+  useEffect(() => {
+    if (selectedPatient) {
+      fetch(`http://127.0.0.1:5000/get_patient_json_data/${selectedPatient}`)
+        .then((response) => response.json())
+        .then((data) => setPatientConditionData(data))
+        .catch((error) => console.error("Error fetching patient data:", error));
+    }
+  }, [selectedPatient]);
 
   const toggleFullScreen = () => {
     setIsFullScreen(!isFullScreen); // Toggle fullscreen state
+  };
+
+  const getConcernButtonColor = () => {
+    const conditionStatus = patientConditionData[selectedCondition];
+    if (conditionStatus === "Yes") {
+      return "green";
+    } else if (conditionStatus === "No") {
+      return "blue";
+    }
+    return "initial";
   };
 
   return (
@@ -76,20 +96,14 @@ const MainContentData = ({
                 fontSize: "0.8rem",
                 padding: "0.3rem 0.5rem",
                 color: "black",
-                backgroundColor: submittedData.find(
-                  (entry) =>
-                    entry.condition === selectedCondition &&
-                    entry.Concern === "Y"
-                )
-                  ? "red"
-                  : "initial",
+                backgroundColor: getConcernButtonColor(),
               }}
               onClick={() => handleSeverityClick(null, "Concern")}
               onMouseEnter={(e) => {
-                e.currentTarget.querySelector("p").style.color = "red";
-                e.currentTarget.querySelector("svg").style.color = "red";
-                // const button = document.getElementById("concernButton");
-                // button.style.backgroundColor = "initial";
+                e.currentTarget.querySelector("p").style.color =
+                  getConcernButtonColor();
+                e.currentTarget.querySelector("svg").style.color =
+                  getConcernButtonColor();
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.querySelector("p").style.color = "initial";

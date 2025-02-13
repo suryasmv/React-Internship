@@ -8,6 +8,8 @@ from Dashboard.patient_MainData import extract_patient_data2
 from Dashboard.pheno_files import find_pdf_files
 from flask import Flask, send_file, abort
 import pandas as pd
+from paths_config import BASE_DIR, BASE_AI_SCORE_PATH
+import json
 
 app = Flask(__name__)
 CORS(app)  # This allows all origins by default
@@ -55,16 +57,11 @@ mapping_dict = {
     "Gastritis": "Gastritis"
 }
 
-# Define the base directory
-BASE_DIR = r"M:\Kavya Project\Full Project\Backend\patient_files"
-
 # Define the pattern to search for
 file_pattern = "*.xlsx"
 
 @app.route('/patient_files/<patient_id>/<file_type>', methods=['GET'])
 def serve_patient_file(patient_id, file_type):
-    # Define the base directory where patient files are stored
-    base_dir = r'M:\Kavya Project\Full Project\Backend\patient_files'
     
     # Map file types to their corresponding filenames
     file_map = {
@@ -76,7 +73,7 @@ def serve_patient_file(patient_id, file_type):
     # Check if the requested file type exists in the map
     if file_type in file_map:
         # Construct the full file path
-        file_path = os.path.join(base_dir, patient_id, file_map[file_type])
+        file_path = os.path.join(BASE_DIR, patient_id, file_map[file_type])
         
         # Check if the file exists
         if os.path.exists(file_path):
@@ -88,11 +85,26 @@ def serve_patient_file(patient_id, file_type):
         # Return a 400 error if the file type is invalid
         abort(400, description="Invalid file type")
 
+@app.route('/get_patient_json_data/<patient_id>', methods=['GET'])
+def get_patient_json_data(patient_id):
+    # Correct file path: Including patient_id as a folder
+    file_path = os.path.join(BASE_DIR, patient_id, f"{patient_id}.json")
+
+    if not os.path.exists(file_path):
+        return jsonify({"error": "File not found"}), 404
+
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+        return jsonify(data)
+    except json.JSONDecodeError:
+        return jsonify({"error": "Invalid JSON format"}), 500
+
 @app.route('/get_patient_conditions/<patient_id>', methods=['GET'])
 def get_patient_conditions(patient_id):
-    # Define the file path with patient_id in front of '_ai'
-    file_path = f"M:/Kavya Project/Full Project/Backend/ai_score/{patient_id}_ai.xlsx"
-    
+
+    file_path = f"{BASE_AI_SCORE_PATH}/{patient_id}_ai.xlsx"
+
     try:
         # Load the Excel file
         df = pd.read_excel(file_path)
