@@ -73,6 +73,8 @@ const Dashboard = () => {
   const [isPhenotypeVisible, setPhenotypeVisible] = useState(true);
   const [aiScore, setAiScore] = useState();
   const [reason, setReason] = useState();
+  const [submittedConditions, setSubmittedConditions] = useState([]); // Track submitted conditions
+  const [removedCondition, setRemovedCondition] = useState(null);
 
   useEffect(() => {
     const storedColumns = localStorage.getItem("selectedColumns");
@@ -145,33 +147,51 @@ const Dashboard = () => {
       (entry) => entry.condition === selectedCondition
     );
 
+    let updatedData = [...submittedData];
+
     if (existingIndex !== -1) {
       // Update existing condition
-      const updatedData = [...submittedData];
       if (property === "severity") {
         updatedData[existingIndex].severity = level;
+        
+        if (level === aiScore) {
+          // Directly assign AI score when severity matches
+          updatedData[existingIndex].AIscore = aiScore;
+          updatedData[existingIndex].Reason = ""; // No reason required
+        } else {
+          // Store AI score and reason but send only on submit
+          updatedData[existingIndex].AIscore = aiScore;
+          updatedData[existingIndex].Reason = reason || "";
+        }
       } else {
+        // Toggle other properties like Concern, NoMutation
         updatedData[existingIndex][property] =
           updatedData[existingIndex][property] === value ? "" : value;
       }
-      setSubmittedData(updatedData);
     } else {
-      // Add new condition with severity or additional properties
+      // Add new condition
       const newEntry = {
         condition: selectedCondition,
         severity: property === "severity" ? level : null,
         Concern: property === "Concern" ? "Y" : "",
         NoMutation: property === "NoMutation" ? "Y" : "",
-        AIscore: property === "aiScore" ? value : "",
-        Reason: property === "reason" ? value : "",
+        AIscore: level === aiScore ? aiScore : "", // Set AI score only if severity matches
+        Reason: level === aiScore ? "" : reason || "", // Reason only if severity mismatches
       };
-      setSubmittedData([...submittedData, newEntry]);
+      updatedData.push(newEntry);
+    }
+
+    setSubmittedData(updatedData);
+
+    if (!submittedConditions.includes(selectedCondition)) {
+      setSubmittedConditions([...submittedConditions, selectedCondition]);
     }
 
     console.log(
       `Updated ${property} for ${selectedCondition}: ${level || value}`
     );
   };
+
 
   const [severity, setSeverity] = useState(null); // Holds selected severity
   const [submittedData, setSubmittedData] = useState([]); // Tracks all submissions
@@ -186,6 +206,8 @@ const Dashboard = () => {
     const newEntry = {
       condition: selectedCondition,
       severity: severity,
+      AIscore: aiScore,
+      Reason: reason || "",
     };
 
     // Check if the condition already exists in submittedData
@@ -197,10 +219,12 @@ const Dashboard = () => {
       // Replace the severity of the existing condition
       const updatedData = [...submittedData];
       updatedData[existingIndex].severity = severity;
+      updatedData[existingIndex].AIscore = aiScore;
+      updatedData[existingIndex].Reason = reason || "";
       setSubmittedData(updatedData);
-      alert(`
-        Updated condition: ${selectedCondition} with severity: ${severity}
-      `);
+      alert(
+        `Updated condition: ${selectedCondition} with severity: ${severity}`
+      );
     } else {
       // Add a new entry if the condition doesn't exist
       setSubmittedData([...submittedData, newEntry]);
@@ -212,10 +236,15 @@ const Dashboard = () => {
   };
 
   // Function to remove a specific entry
+  // Function to remove a specific entry
   const handleRemove = (index) => {
     const updatedData = [...submittedData];
-    updatedData.splice(index, 1);
+    const removed = updatedData.splice(index, 1)[0];
     setSubmittedData(updatedData);
+    setRemovedCondition(removed.condition); // Set the removed condition
+    setSubmittedConditions((prevConditions) =>
+      prevConditions.filter((condition) => condition !== removed.condition)
+    ); // Update submittedConditions state
   };
 
   const handleDownload = () => {
@@ -638,6 +667,29 @@ const Dashboard = () => {
       return <div>No condition data available for the selected condition.</div>;
     }
 
+    const getCellStyle = (columnName, value) => {
+      switch (columnName) {
+        case "Zygosity":
+          return value === "Homozygous Variant"
+            ? { backgroundColor: "orange" }
+            : {};
+        case "clin sig":
+          return value === "Uncertain Significance"
+            ? { backgroundColor: "yellow" }
+            : {};
+        case "IMPACT":
+          return value === "HIGH" ? { backgroundColor: "red" } : {};
+        case "Lit":
+          return value === "Yes"
+            ? { backgroundColor: "green", color: "white" }
+            : value === "No"
+            ? { backgroundColor: "violet" }
+            : {};
+        default:
+          return {};
+      }
+    };
+
     return (
       <div>
         <TabView scrollable>
@@ -729,6 +781,10 @@ const Dashboard = () => {
                                           whiteSpace: "normal",
                                           textAlign: "left",
                                           fontSize: "14px",
+                                          ...getCellStyle(
+                                            columnName,
+                                            rowData[columnName]
+                                          ),
                                         }}
                                       >
                                         {content}
@@ -907,6 +963,10 @@ const Dashboard = () => {
                     setVisibleleft={setVisibleleft}
                     sidebarprefer={sidebarprefer}
                     handleSingleCodnition={handleSingleCodnition}
+                    submittedConditions={submittedConditions}
+                    setSubmittedConditions={setSubmittedConditions}
+                    removedCondition={removedCondition}
+                    selectedPatient={selectedPatient}
                   />
                 </div>
               )}
@@ -919,6 +979,7 @@ const Dashboard = () => {
                   submittedData={submittedData}
                   setSubmittedData={setSubmittedData}
                   handleSeverityClick={handleSeverityClick}
+                  handleSeveritySubmit={handleSeveritySubmit}
                   RenderTabViewContent={RenderTabViewContent}
                   selectedPatient={selectedPatient}
                   aiScore={aiScore}

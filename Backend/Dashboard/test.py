@@ -1,31 +1,39 @@
-import pandas as pd
+import os
+import fnmatch
 import json
 
-# Load the Excel file
-file_path = "M:/Kavya Project/Full Project/Backend/patient_files/scoring_charts/KHAIGHGPTTL569_Scoring_chart.xlsx"
-df = pd.read_excel(file_path)
+def find_patient_files(base_dir, pattern="*.xlsx"):
+    """
+    Search for patient files within batch directories (including nested subfolders).
+    Returns a dictionary with batch names as keys and patient names as values.
+    """
+    batch_dict = {}
 
-# Strip spaces from column names
-df.columns = df.columns.str.strip()
+    for root, dirs, files in os.walk(base_dir):
+        # Extract the batch name (first level folder inside base_dir)
+        relative_path = os.path.relpath(root, base_dir)
+        batch_name = relative_path.split(os.sep)[0]  # Get the first folder name (BATCH1, BATCH2, etc.)
 
-# Dictionary to store results
-conditions_dict = {}
+        if batch_name.upper().startswith("BATCH"):  # Ensure it’s a batch folder
+            if batch_name not in batch_dict:
+                batch_dict[batch_name] = []
 
-# Iterate over all columns starting from the 2nd column (index 1)
-for col in df.columns[1:]:  
-    # Check if column has at least one "Y"
-    if (df[col] == 'Y').any():
-        conditions_dict[col] = "Condition met"  # You can modify the value as needed
+            # Debugging: Check files in each folder
+            print(f"Checking folder: {root}, Files: {files}")
 
-# Convert dictionary to JSON
-json_output = json.dumps(conditions_dict, indent=4)
+            for filename in fnmatch.filter(files, pattern):
+                patient_name = os.path.splitext(filename)[0]  # Remove extension
+                batch_dict[batch_name].append(patient_name)  # Add patient name
 
-# Print the JSON output
-print(json_output)
+    return batch_dict
 
-# Save JSON output to a file
-output_path = "filtered_conditions.json"
-with open(output_path, "w") as json_file:
-    json_file.write(json_output)
+def get_patient_json(base_dir):
+    """
+    Fetch batch-wise patient data and return as JSON string.
+    """
+    batch_data = find_patient_files(base_dir)
+    return json.dumps(batch_data, indent=4)
 
-print(f"\n✅ Filtered JSON saved successfully at: {output_path}")
+if __name__ == "__main__":
+    BASE_DIR = r"M:\Kavya Project\React-Internship\Backend\patient_files"
+    print(get_patient_json(BASE_DIR))

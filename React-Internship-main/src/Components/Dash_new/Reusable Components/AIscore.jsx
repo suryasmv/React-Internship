@@ -11,12 +11,14 @@ const AIscore = ({
   setReason,
   aiScore,
   setAiScore,
+  concern, // Added concern prop
 }) => {
   const [patientData, setPatientData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [isSubmitted, setIsSubmitted] = useState(true);
-  const reasonRef = useRef(""); // Use ref to store input value
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showScore, setShowScore] = useState(false); // Toggle AI score visibility
+  const reasonRef = useRef(null);
 
   useEffect(() => {
     if (selectedPatient) {
@@ -27,65 +29,74 @@ const AIscore = ({
         .then((response) => response.json())
         .then((data) => {
           setPatientData(data);
+          setAiScore(data ? data[selectedConditon] : null);
           setLoading(false);
         })
-        .catch((err) => {
+        .catch(() => {
           setError("Failed to fetch data");
           setLoading(false);
         });
     }
-  }, [selectedPatient]);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
-
-  setAiScore(patientData ? patientData[selectedConditon] : null);
+  }, [selectedPatient, selectedConditon, setAiScore]);
 
   const severityMismatch = severity && aiScore && severity !== aiScore;
+  const shouldAutoSubmit = severity === aiScore; // Auto-submit condition
 
   const handleSubmit = () => {
-    const enteredReason = reasonRef.current.value; // Get value only on submit
+    const enteredReason = reasonRef.current?.value || ""; // Ensure it starts as an empty string
     setReason(enteredReason);
 
     console.log("Submitting reason:", enteredReason);
     console.log("Triggering handleSeverityClick for aiScore with:", aiScore);
 
-    // ✅ Ensure AI Score update is triggered
     handleSeverityClick(selectedConditon, "aiScore", aiScore);
     handleSeverityClick(selectedConditon, "reason", enteredReason);
 
     setIsSubmitted(true);
+    if (reasonRef.current) {
+      reasonRef.current.value = ""; // ✅ Clear input field after submit
+    }
   };
+
+  // ✅ Auto-submit if severity and concern match
+  useEffect(() => {
+    if (shouldAutoSubmit) {
+      setReason(""); // ✅ Ensure reason is empty before auto-submitting
+      handleSubmit();
+    }
+  }, [shouldAutoSubmit]); // Runs when shouldAutoSubmit changes
 
   return (
     <div className="flex flex-col items-center">
-      {/* AI Score Button (Changes color & label when severityMismatch is true) */}
-      <Button
-        style={{
-          backgroundColor: severityMismatch ? "red" : "blue",
-          color: "white",
-        }}
-        label={severityMismatch ? `AI Score ${aiScore}` : `AI Score`}
-        className="mb-2"
-      />
+      {/* ✅ Show loading and error inside JSX instead of returning early */}
+      {loading && <div>Loading...</div>}
+      {error && <div>{error}</div>}
 
-      {/* Show Text Field and Submit Button If There's a Severity Mismatch */}
-      {severityMismatch && (
-        <div className="flex items-center gap-2">
-          <InputText
-            ref={reasonRef} // Use ref instead of state
-            placeholder="Enter reason"
-            className="p-inputtext-sm mb-2"
-          />
+      {/* ✅ Click to Reveal/Hide AI Score */}
+      {!loading && !error && (
+        <>
           <Button
             style={{
-              backgroundColor: isSubmitted ? "green" : "blue",
+              backgroundColor: severityMismatch ? "red" : "blue",
               color: "white",
             }}
-            label="Submit"
-            onClick={handleSubmit}
+            label={showScore ? `AI Score: ${aiScore}` : "AI Score"}
+            className="mb-2"
+            onClick={() => setShowScore((prev) => !prev)} // ✅ Toggle AI score visibility
           />
-        </div>
+
+          {/* ✅ Show Text Field & Submit Only If Needed */}
+          {!shouldAutoSubmit && severityMismatch && (
+            <div className="flex items-center gap-2">
+              <InputText ref={reasonRef} placeholder="Enter reason" className="p-inputtext-sm mb-2" />
+              <Button
+                style={{ backgroundColor: isSubmitted ? "green" : "blue", color: "white" }}
+                label="Submit"
+                onClick={handleSubmit}
+              />
+            </div>
+          )}
+        </>
       )}
     </div>
   );

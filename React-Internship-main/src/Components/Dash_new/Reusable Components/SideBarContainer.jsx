@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./SideBarContainer.css"; // Import the CSS file
 
 const SideBarContainer = ({
@@ -6,12 +6,22 @@ const SideBarContainer = ({
   setVisibleleft,
   sidebarprefer,
   handleSingleCodnition,
+  submittedConditions,
+  setSubmittedConditions, // Ensure this is passed from parent
+  removedCondition,
+  selectedPatient, // Pass selectedPatient as a prop
 }) => {
-  const [selectedPreference, setSelectedPreference] = useState(null); // State for selected preference
+  const [selectedPreference, setSelectedPreference] = useState(null);
+
+  useEffect(() => {
+    // Reset selected preference and submitted conditions when patient changes
+    setSelectedPreference(null);
+    setSubmittedConditions([]); // Reset submitted conditions here
+  }, [selectedPatient]);
 
   const handleClick = (title) => {
-    setSelectedPreference(title); // Set the selected preference
-    handleSingleCodnition(title); // Call the parent function
+    setSelectedPreference(title);
+    handleSingleCodnition(title);
   };
 
   return (
@@ -22,7 +32,7 @@ const SideBarContainer = ({
           width: "100%",
           display: "flex",
           flexWrap: "wrap",
-          justifyContent: "center", //in-line styling
+          justifyContent: "center",
         }}
       >
         {sidebarprefer.map((preference, index) => (
@@ -30,6 +40,8 @@ const SideBarContainer = ({
             key={index}
             className={`sidebar-button ${
               selectedPreference === preference.title ? "selected" : ""
+            } ${
+              submittedConditions.includes(preference.title) ? "submitted" : ""
             }`}
             onClick={() => handleClick(preference.title)}
           >
@@ -42,7 +54,7 @@ const SideBarContainer = ({
               style={{
                 width: "100%",
                 wordWrap: "break-word",
-                textAlign: "center" /* Center-align the text */,
+                textAlign: "center",
               }}
             >
               {preference.title}
